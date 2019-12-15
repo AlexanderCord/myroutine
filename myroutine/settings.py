@@ -50,6 +50,14 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.RemoteUserMiddleware',    
 ]
 
+
+REST_FRAMEWORK = {
+    # other settings...
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': [],
+}
+
 #AUTHENTICATION_BACKENDS = (
 #  'django.contrib.auth.backends.RemoteUserBackend',
 #)

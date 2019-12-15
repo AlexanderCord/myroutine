@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/dev/howto/deployment/wsgi/
 
 import os
 
+from local_settings import *
 from django.core.wsgi import get_wsgi_application
 import base64
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myroutine.settings')
