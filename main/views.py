@@ -1,12 +1,36 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,Http404
 from django.template import loader
-
-
 from rest_framework import generics
+from .serializers import *
+from .models import *
 
-from .serializers import TaskSerializer
+"""
+Backend API methods
+"""
 
-from .models import Task, Schedule
+
+class TaskPostpone(generics.GenericAPIView):
+    def get_object(self):
+        raise Http404
+
+
+class TaskIncrement(generics.GenericAPIView):
+    def get_object(self):
+        raise Http404
+
+class TaskChangelog(generics.GenericAPIView):
+    def get_object(self):
+        raise Http404
+
+
+class PeriodList(generics.ListAPIView):
+    queryset = Period.objects.all()
+    serializer_class = PeriodSerializer
+
+
+class CategoryList(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 class TaskList(generics.ListAPIView):
     serializer_class = TaskSerializer
@@ -19,13 +43,15 @@ class TaskList(generics.ListAPIView):
         print(str(queryset.query))
         return queryset
     
-    
-
 
 class TaskDetail(generics.RetrieveAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
 
+
+"""
+Regular UI
+"""
 
 def index(request):
     task_list = Task.objects.filter(active=True).order_by('-id')[:5]
