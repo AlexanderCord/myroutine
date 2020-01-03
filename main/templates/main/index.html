@@ -1,7 +1,7 @@
 {% if task_list  %}
     <ul>
     {% for task in task_list %}
-        <li><a href="{% url 'task' task.id %}">{{ task.task }} - every  {{ task.period }} days, started {{ task.start_date }}</a></li>
+        <li><a href="{% url 'task' task.id %}">{{ task.task }} - every  {{ task.period }} days, started {{ task.start_date }}, next date {{ task.schedule.next_date }} </a></li>
     {% endfor %}
     </ul>
 {% else %}
