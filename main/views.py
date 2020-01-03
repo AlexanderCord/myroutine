@@ -3,15 +3,36 @@ from django.template import loader
 from rest_framework import generics
 from .serializers import *
 from .models import *
+from datetime import datetime  
+from datetime import timedelta
 
 """
 Backend API methods
 """
 
 
-class TaskPostpone(generics.GenericAPIView):
-    def get_object(self):
-        raise Http404
+class TaskPostpone(generics.ListAPIView):
+
+    serializer_class = ScheduleSerializer
+    def get_queryset(self):    
+        task_id = self.request.query_params.get('task_id', None)
+        if task_id is not None:
+            try:
+                qs = Schedule.objects.get(task_id=task_id)
+                qs.next_date = qs.next_date + timedelta(days=7) 
+                qs.save()
+            except Schedule.DoesNotExist:
+                raise Http404("Next task date does not exist")
+            
+            print(str(qs))
+
+        else:
+            raise Http404("Task_id parameter should be set")
+        queryset = Schedule.objects.filter(task_id=task_id).all()
+
+        print(str(queryset.query))
+        return queryset
+
 
 
 class TaskIncrement(generics.GenericAPIView):
