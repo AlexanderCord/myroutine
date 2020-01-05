@@ -16,10 +16,25 @@ class TaskPostpone(generics.ListAPIView):
     serializer_class = ScheduleSerializer
     def get_queryset(self):    
         task_id = self.request.query_params.get('task_id', None)
+        delay_shift = self.request.query_params.get('delay_shift', None)
+        delay_shift = int(delay_shift)
+        
+        if delay_shift is None:
+            print("delay shift is not set")      
+            raise Http404("delay shift is not set or not equal to [1,7,30]")
+
+        elif  delay_shift not in [1,7,30]:
+            print("delay shift is not ok, %d" % delay_shift)      
+            raise Http404("delay shift is not set or not equal to [1,7,30]")
+            
+        else:
+            print("delay_shift is ok, %d" % delay_shift)        
+        
         if task_id is not None:
+        
             try:
                 qs = Schedule.objects.get(task_id=task_id)
-                qs.next_date = qs.next_date + timedelta(days=7) 
+                qs.next_date = qs.next_date + timedelta(days=delay_shift) 
                 qs.save()
             except Schedule.DoesNotExist:
                 raise Http404("Next task date does not exist")
