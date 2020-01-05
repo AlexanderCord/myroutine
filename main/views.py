@@ -17,7 +17,8 @@ class TaskPostpone(generics.ListAPIView):
     def get_queryset(self):    
         task_id = self.request.query_params.get('task_id', None)
         delay_shift = self.request.query_params.get('delay_shift', None)
-        delay_shift = int(delay_shift)
+        if delay_shift is not None:
+            delay_shift = int(delay_shift)
         
         if delay_shift is None:
             print("delay shift is not set")      
