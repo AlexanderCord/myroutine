@@ -102,8 +102,10 @@ def index(request):
 def task(request, task_id):
     # task_list = Task.objects.order_by('-id')[:5]
     template = loader.get_template('main/task.html')
+    task_row = Task.objects.get(pk=task_id)
     context = {
         'task_id': task_id,
+        'task' : task_row
     }
     return HttpResponse(template.render(context, request))
 

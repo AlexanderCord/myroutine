@@ -1,7 +1,9 @@
-{{ task_id }}
-<h3>Task: Buy something </h3>
+<h3>Task #{{ task_id }}: {{task.task}} </h3>
 <ul>
-<li>Next scheduled date: Nov 09, 2019</li>
+<li>Period: {{task.period}}</li>
+<li>Start date: {{task.start_date}}</li>
+<li>Next scheduled date: {{task.schedule.next_date}}</li>
+
 <li><a href="">Mark as done and get next date</a></li>
 
 <li><a href="">Postpone for 1 week</a></li>
