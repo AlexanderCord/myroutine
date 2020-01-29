@@ -57,6 +57,9 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [],
     'DEFAULT_PERMISSION_CLASSES': [],
     'UNICODE_JSON': False, 
+    #'DEFAULT_AUTHENTICATION_CLASSES': (
+    #  'rest_framework_firebase.authentication.FirebaseAuthentication',
+    #    )    
 }
 
 #AUTHENTICATION_BACKENDS = (

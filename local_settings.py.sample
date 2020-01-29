@@ -23,3 +23,6 @@ BASIC_AUTH_PASSWORD = ''
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = ''
 
+#FIREBASE_AUTH = {
+#    'FIREBASE_ACCOUNT_KEY_FILE': 'path_to_your_credentials.json',
+#}

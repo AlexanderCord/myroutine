@@ -4,9 +4,14 @@
 <li>Start date: {{task.start_date}}</li>
 <li>Next scheduled date: {{task.schedule.next_date}}</li>
 
-<li><a href="">Mark as done and get next date</a></li>
+<li><a href="{% url 'task_done' task_id %}">Mark as done and get next date</a></li>
 
-<li><a href="">Postpone for 1 week</a></li>
+
+<li><a href="{% url 'task_postpone' task_id 1 %}">Move for 1 day</a></li>
+
+<li><a href="{% url 'task_postpone' task_id 7 %}">Postpone for week</a></li>
+
+<li><a href="{% url 'task_postpone' task_id 30 %}">Postpone for month</a></li>
 
 
 </ul>
