@@ -2,7 +2,13 @@
 <ul>
 <li>Period: {{task.period}}</li>
 <li>Start date: {{task.start_date}}</li>
+{% if task.schedule.next_date %}
 <li>Next scheduled date: {{task.schedule.next_date}}</li>
+{% else %}
+<li>Set start date to begin schedule: <form action="{% url 'task_start' task_id %}" method="post">{% csrf_token %}<input type="date" name="start_date"> <input type="submit" value="Set"></form></li>
+
+{% endif %}
+
 
 <li><a href="{% url 'task_done' task_id %}">Mark as done and get next date</a></li>
 

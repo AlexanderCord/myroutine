@@ -43,6 +43,36 @@ def _postponeTask(task_id, delay_shift):
         raise Http404("Task_id parameter should be set")
 
 
+
+def _startTask(task_id, start_date):
+        
+    if start_date is None:
+        print("start_date is not set")      
+        raise Http404("start_date is not set ")
+
+    else:
+        print("start_date is ok, %s" % start_date)        
+        
+    if task_id is not None:
+        
+        try:
+            task = Task.objects.get(pk = task_id)
+            
+            qs = Schedule.objects.create(task_id = task, next_date = start_date)
+            
+            qs.save()
+        except DatabaseError as e:
+            print(str(e))
+            
+            raise Http404("Error during save")
+            
+        print(str(qs))
+
+    else:
+        raise Http404("Task_id parameter should be set")
+
+
+
 class TaskPostpone(generics.ListAPIView):
 
     serializer_class = ScheduleSerializer
@@ -109,8 +139,16 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
+def task_start(request, task_id):
+    start_date = request.POST.get('start_date', None)
+    
+    _startTask(task_id, start_date)
+        
+    return HttpResponse("Task %d now has start date %s, <a href='javascript:history.go(-1)'>Go back</a>" % (task_id, start_date))
+
 def task_done(request, task_id):
     return HttpResponse("Task %d marked as done, <a href='javascript:history.go(-1)'>Go back</a>" % task_id)
+
 
 
 def task_postpone(request, task_id, delay_shift):
