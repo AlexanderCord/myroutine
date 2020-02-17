@@ -52,13 +52,13 @@ class Changelog(models.Model):
     task_id = models.ForeignKey('Task', on_delete=models.CASCADE)
 
     """
-    
-    1 = postponed
-    2 = complete
+    1 = started
+    2 = postponed
+    3 = done
     
     """
     action = models.IntegerField(default=0)
-    log_date  = models.DateTimeField('action date')
+    log_date  = models.DateTimeField('action date', auto_now_add = True)
 
 
     def __str__(self):
