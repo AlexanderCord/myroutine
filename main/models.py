@@ -39,8 +39,13 @@ class Task(models.Model):
 
 
 class Schedule(models.Model):
+        
     task_id = models.OneToOneField('Task', on_delete=models.CASCADE)
     next_date = models.DateField('next task date')
+
+    def __str__(self):
+        return str(self.task_id) + '-' + str(self.next_date)
+
     
 class Changelog(models.Model):
     task_id = models.ForeignKey('Task', on_delete=models.CASCADE)
