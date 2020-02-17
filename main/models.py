@@ -48,6 +48,19 @@ class Schedule(models.Model):
 
     
 class Changelog(models.Model):
+
     task_id = models.ForeignKey('Task', on_delete=models.CASCADE)
+
+    """
+    
+    1 = postponed
+    2 = complete
+    
+    """
     action = models.IntegerField(default=0)
     log_date  = models.DateTimeField('action date')
+
+
+    def __str__(self):
+        return str(self.task_id) + '-' + str(self.action) + '-' + str(self.log_date)
+
