@@ -58,6 +58,39 @@ def _postponeTask(task_id, delay_shift):
 
 
 
+# @todo delay_shift should be loaded from Task properties
+def _completeTask(task_id):
+
+    delay_shift = 7
+
+    if task_id is not None:
+        
+        try:
+            qs = Schedule.objects.get(task_id=task_id)
+            qs.next_date = qs.next_date + timedelta(days=delay_shift) 
+            qs.save()
+            task = Task.objects.get(pk = task_id)
+
+            print("saving changelog".encode('utf-8'))
+            qs2 = Changelog.objects.create(task_id = task, action = TASK_LOG_DONE)
+            qs2.save()
+
+        except Schedule.DoesNotExist:
+            raise Http404("Next task date does not exist")
+
+        except DatabaseError as e:
+            print(str(e))
+            
+            raise Http404("Error during save")
+            
+        print(str(qs).encode("utf-8"))
+        print(str(qs2).encode("utf-8"))
+
+    else:
+        raise Http404("Task_id parameter should be set")
+
+
+
 def _startTask(task_id, start_date):
         
     if start_date is None:
@@ -165,6 +198,7 @@ def task_start(request, task_id):
     return HttpResponse("Task %d now has start date %s, <a href='javascript:history.go(-1)'>Go back</a>" % (task_id, start_date))
 
 def task_done(request, task_id):
+    _completeTask(task_id)
     return HttpResponse("Task %d marked as done, <a href='javascript:history.go(-1)'>Go back</a>" % task_id)
 
 
