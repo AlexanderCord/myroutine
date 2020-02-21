@@ -25,8 +25,11 @@
 <br>
 History:
 <ul>
-<li>Nov 09 - Postponed 1 week</li>
-<li>Nov 15 - marked as done</li>
+{% load custom_tags %}
+
+{% for log_item in log %}
+<li>{{log_item.log_date}}: {{action_enum|get_item:log_item.action}}</li>
+{% endfor%}
 
 </ul>
 
