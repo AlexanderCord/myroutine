@@ -15,5 +15,5 @@ urlpatterns = [
 
     path('task/<int:task_id>/start', views.task_start, name = 'task_start'),
     
-    
+    path('authorize', views.authorize, name = 'authorize'),    
 ]

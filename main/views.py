@@ -223,5 +223,7 @@ def task(request, task_id):
     return HttpResponse(template.render(context, request))
 
 
-
+def authorize(request):
+    template = loader.get_template('main/authorize.html')
+    return HttpResponse(template.render(None, request))
 
