@@ -16,4 +16,7 @@ urlpatterns = [
     path('task/<int:task_id>/start', views.task_start, name = 'task_start'),
     
     path('authorize', views.authorize, name = 'authorize'),    
+
+    path('ajax/task/done', views.ajax_task_done, name = 'ajax_task_done'),
+
 ]

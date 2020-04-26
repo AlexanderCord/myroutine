@@ -1,4 +1,7 @@
 <h3>Task #{{ task_id }}: {{task.task}} </h3>
+
+<div id="message" style="display:none;">Hello!</div>
+
 <ul>
 <li>Period: {{task.period}}</li>
 <li>Start date: {{task.start_date}}</li>
@@ -10,7 +13,7 @@
 {% endif %}
 
 
-<li><a href="{% url 'task_done' task_id %}">Mark as done and get next date</a></li>
+<li><a href="{% url 'task_done' task_id %}" id="link_task_done" task-id="{{task_id}}">Mark as done and get next date</a></li>
 
 
 <li><a href="{% url 'task_postpone' task_id 1 %}">Move for 1 day</a></li>
@@ -35,3 +38,33 @@ History:
 
 <br>
 <a href="/">To the main page</a>
+ <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+ <script>
+     $("#link_task_done").click(function () {
+        task_id = $(this).attr('task-id')
+        console.log( task_id );
+        message_box = $('#message');
+        $.ajax({
+            url: '/ajax/task/done',
+            data: {
+                'task_id' : task_id
+            },
+            dataType: 'json',
+            success: function (data) {
+            if (data.result) {
+                console.log("Result:" + data.result);
+                message_box.text(data.result);
+                
+            } else {
+                console.log("Error has occured during request");
+                message_box.text('Error has occured during request');
+            }
+            message_box.fadeIn('slow', function(){
+                message_box.delay(5000).fadeOut(); 
+            });
+
+        }
+        });
+        return false;
+    });
+ </script>

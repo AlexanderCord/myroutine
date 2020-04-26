@@ -1,4 +1,4 @@
-from django.http import HttpResponse,Http404
+from django.http import HttpResponse,Http404, JsonResponse
 from django.template import loader
 from rest_framework import generics
 from .serializers import *
@@ -200,6 +200,21 @@ def task_start(request, task_id):
 def task_done(request, task_id):
     _completeTask(task_id)
     return HttpResponse("Task %d marked as done, <a href='javascript:history.go(-1)'>Go back</a>" % task_id)
+
+"""
+UI AJAX Methods 
+"""
+
+def ajax_task_done(request):
+    task_id = int(request.GET.get('task_id', None))
+    _completeTask(task_id)
+
+    data = {
+        'result': ("Task %d marked as done" % task_id)
+    }
+
+    return JsonResponse(data)
+
 
 
 
