@@ -215,6 +215,17 @@ def ajax_task_done(request):
 
     return JsonResponse(data)
 
+def ajax_task_postpone(request):
+    task_id = int(request.GET.get('task_id', None))
+    delay_shift = int(request.GET.get('delay_shift', None))
+    _postponeTask(task_id, delay_shift)
+    data = {
+        'result': ("Task %d postponed for %d days" % (task_id, delay_shift))
+    }
+
+    return JsonResponse(data)
+
+
 
 
 

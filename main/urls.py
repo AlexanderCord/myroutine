@@ -18,5 +18,8 @@ urlpatterns = [
     path('authorize', views.authorize, name = 'authorize'),    
 
     path('ajax/task/done', views.ajax_task_done, name = 'ajax_task_done'),
+    
+    path('ajax/task/postpone', views.ajax_task_postpone, name = 'ajax_task_postpone'),
+    
 
 ]

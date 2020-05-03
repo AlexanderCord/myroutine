@@ -16,11 +16,11 @@
 <li><a href="{% url 'task_done' task_id %}" id="link_task_done" task-id="{{task_id}}">Mark as done and get next date</a></li>
 
 
-<li><a href="{% url 'task_postpone' task_id 1 %}">Move for 1 day</a></li>
+<li><a href="{% url 'task_postpone' task_id 1 %}" delay-shift="1" class="link_task_postpone" task-id="{{task_id}}">Move for 1 day</a></li>
 
-<li><a href="{% url 'task_postpone' task_id 7 %}">Postpone for week</a></li>
+<li><a href="{% url 'task_postpone' task_id 7 %}"  delay-shift="7" class="link_task_postpone" task-id="{{task_id}}">Postpone for week</a></li>
 
-<li><a href="{% url 'task_postpone' task_id 30 %}">Postpone for month</a></li>
+<li><a href="{% url 'task_postpone' task_id 30 %}"  delay-shift="30" class="link_task_postpone" task-id="{{task_id}}">Postpone for month</a></li>
 
 
 </ul>
@@ -42,7 +42,8 @@ History:
  <script>
      $("#link_task_done").click(function () {
         task_id = $(this).attr('task-id')
-        console.log( task_id );
+        console.log( ' marking as done  task_id ' + task_id  );
+
         message_box = $('#message');
         $.ajax({
             url: '/ajax/task/done',
@@ -67,4 +68,36 @@ History:
         });
         return false;
     });
+    
+     $(".link_task_postpone").click(function () {
+        task_id = $(this).attr('task-id');
+        delay_shift = $(this).attr('delay-shift');        
+        console.log(' delaying task_id ' + task_id + ' for ' + delay_shift + ' days' );
+        message_box = $('#message');
+        $.ajax({
+            url: '/ajax/task/postpone',
+            data: {
+                'task_id' : task_id,
+                'delay_shift' : delay_shift
+            },
+            dataType: 'json',
+            success: function (data) {
+            if (data.result) {
+                console.log("Result:" + data.result);
+                message_box.text(data.result);
+                
+            } else {
+                console.log("Error has occured during request");
+                message_box.text('Error has occured during request');
+            }
+            message_box.fadeIn('slow', function(){
+                message_box.delay(5000).fadeOut(); 
+            });
+
+        }
+        });
+        return false;
+    });
+    
+    
  </script>
