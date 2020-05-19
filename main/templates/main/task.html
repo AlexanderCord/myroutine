@@ -1,3 +1,8 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+
 <h3>Task #{{ task_id }}: {{task.task}} </h3>
 
 <div id="message" style="display:none;">Hello!</div>
@@ -38,7 +43,6 @@ History:
 
 <br>
 <a href="/">To the main page</a>
- <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
  <script>
      $("#link_task_done").click(function () {
         task_id = $(this).attr('task-id')
@@ -101,3 +105,5 @@ History:
     
     
  </script>
+
+{% endblock %}

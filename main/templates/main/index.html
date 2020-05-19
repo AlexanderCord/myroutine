@@ -1,3 +1,7 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
 
 <a href="{% url 'authorize' %}">Sign in with Google</a><br>
 
@@ -12,3 +16,4 @@
 {% endif %}
 
 
+{% endblock %}
