@@ -43,7 +43,13 @@ History:
 
 <br>
 <a href="/">To the main page</a>
- <script>
+
+
+{% endblock %}
+
+{% block javascript %}
+ <script type="text/javascript">
+$(document).ready(function() {
      $("#link_task_done").click(function () {
         task_id = $(this).attr('task-id')
         console.log( ' marking as done  task_id ' + task_id  );
@@ -87,6 +93,7 @@ History:
             dataType: 'json',
             success: function (data) {
             if (data.result) {
+                
                 console.log("Result:" + data.result);
                 message_box.text(data.result);
                 
@@ -102,8 +109,6 @@ History:
         });
         return false;
     });
-    
-    
- </script>
-
+});    
+</script>
 {% endblock %}
