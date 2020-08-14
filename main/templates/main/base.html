@@ -3,20 +3,22 @@
   <head>
     <meta charset="utf-8">
     <title>{% block title %}Default Title{% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
     {% block stylesheet %}
     {% endblock %}
-    {load static}
-    <link href="{{ STATIC_URL }}/static/bootstrp/dist/css/bootstrap.css" charset="utf-8" type="text/less" rel="stylesheet">
+    <link href="{{ STATIC_URL }}/static/bootstrp/dist/css/bootstrap.css" charset="utf-8" type="text/css" rel="stylesheet">
 
   </head>
-  <body>
+  <body class="bg-transparent">
     <header>
-      MyRoutine
+      <div class="text-center bg-dark p-2">
+      
+      <h1 class="text-white">MyRoutine</h1>
+      </div>
     </header>
+
     <main class="container">
     
-      <div class="starter-template text-center py-5 px-3">
+      <div class="starter-template text-left py-5 px-3">
       {% block content %}
       {% endblock %}
       </div>
@@ -25,7 +27,6 @@
       ...
     </footer>
     <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<!--    <script src="{% static 'js/app.js' %}"></script>-->
     {% block javascript %}{% endblock %}
   </body>
 </html>
