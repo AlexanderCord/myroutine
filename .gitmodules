@@ -1,0 +1,3 @@
+[submodule "static/bootstrp"]
+	path = static/bootstrp
+	url = https://github.com/twbs/bootstrap.git

@@ -4,15 +4,22 @@
     <meta charset="utf-8">
     <title>{% block title %}Default Title{% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/app.css' %}">
-    {% block stylesheet %}{% endblock %}
+    {% block stylesheet %}
+    {% endblock %}
+    {load static}
+    <link href="{{ STATIC_URL }}/static/bootstrp/dist/css/bootstrap.css" charset="utf-8" type="text/less" rel="stylesheet">
+
   </head>
   <body>
     <header>
       MyRoutine
     </header>
-    <main>
+    <main class="container">
+    
+      <div class="starter-template text-center py-5 px-3">
       {% block content %}
       {% endblock %}
+      </div>
     </main>
     <footer>
       ...
