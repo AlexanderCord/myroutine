@@ -182,7 +182,7 @@ Regular UI
 """
 
 def index(request):
-    task_list = Task.objects.filter(active=True).order_by('-id')[:5]
+    task_list = Task.objects.filter(active=True).order_by('-id')
     template = loader.get_template('main/index.html')
     context = {
         'task_list': task_list,
