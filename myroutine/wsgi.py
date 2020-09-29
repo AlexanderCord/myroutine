@@ -15,7 +15,7 @@ import base64
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'myroutine.settings')
 
 application = get_wsgi_application()
-
+"""
 class AuthenticationMiddleware(object):
     def __init__(self, app, username, password):
         self.app = app
@@ -47,3 +47,4 @@ class AuthenticationMiddleware(object):
 
 
 application = AuthenticationMiddleware(application, BASIC_AUTH_USERNAME, BASIC_AUTH_PASSWORD)
+"""
