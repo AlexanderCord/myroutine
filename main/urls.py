@@ -1,4 +1,8 @@
-from django.urls import path
+from django.urls import path, include
+
+from django.contrib.auth import logout
+from django.conf import settings
+
 
 from . import views
 
@@ -21,5 +25,9 @@ urlpatterns = [
     
     path('ajax/task/postpone', views.ajax_task_postpone, name = 'ajax_task_postpone'),
     
+
+    path('', include('social_django.urls', namespace='social')),
+    path('logout/', logout, {'next_page': settings.LOGOUT_REDIRECT_URL},
+    name='logout'),
 
 ]

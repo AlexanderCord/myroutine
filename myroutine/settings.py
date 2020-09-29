@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'social_django',
     
 ]
 
@@ -62,9 +63,11 @@ REST_FRAMEWORK = {
     #    )    
 }
 
-#AUTHENTICATION_BACKENDS = (
-#  'django.contrib.auth.backends.RemoteUserBackend',
-#)
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    
+  'django.contrib.auth.backends.RemoteUserBackend',
+)
 
 ROOT_URLCONF = 'myroutine.urls'
 
