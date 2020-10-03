@@ -64,9 +64,10 @@ REST_FRAMEWORK = {
 }
 
 AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.RemoteUserBackend',
     'social_core.backends.google.GoogleOAuth2',
     
-  'django.contrib.auth.backends.RemoteUserBackend',
 )
 
 ROOT_URLCONF = 'myroutine.urls'
