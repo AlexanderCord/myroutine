@@ -1,6 +1,5 @@
 from django.urls import path, include
 
-from django.contrib.auth import logout
 from django.conf import settings
 
 
@@ -27,7 +26,7 @@ urlpatterns = [
     
 
     path('', include('social_django.urls', namespace='social')),
-    path('logout/', logout, {'next_page': settings.LOGOUT_REDIRECT_URL},
-    name='logout'),
+    path('signout/', views.signout,  name='signout'),
+
 
 ]

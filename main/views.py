@@ -1,4 +1,6 @@
 from django.http import HttpResponse,Http404, JsonResponse
+from django.shortcuts import HttpResponseRedirect
+
 from django.template import loader
 from rest_framework import generics
 from .serializers import *
@@ -6,11 +8,22 @@ from .models import *
 from datetime import datetime  
 from datetime import timedelta
 
+from django.contrib.auth import logout
+
 from .static import *
+
+"""
+Google OAuth logout
+"""
+def signout(request):
+    logout(request)
+    return HttpResponseRedirect('/')
+
 
 """
 Backend API methods
 """
+
 
 
 # @todo refactor this postpone method to a separate model method
