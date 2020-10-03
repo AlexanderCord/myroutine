@@ -18,8 +18,15 @@
     </header>
 
     <main class="container" role="main">
-    
+
+{% if user.is_authenticated %}
+
+
       <div class="starter-template text-left py-5 px-3">
+      <p>Logged as {{ user.username }}</p>
+      <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+
+
       {% block content %}
       {% endblock %}
       </div>
@@ -31,5 +38,26 @@
     <script src="{{ STATIC_URL }}/static/bootstrp/dist/js/bootstrap.js"></script>
     
     {% block javascript %}{% endblock %}
+
+
+{% else %}
+      <div class="starter-template text-left py-5 px-3">
+
+          <a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}">
+            Login
+          </a>
+      </div>
+{% endif %}
+    </main>
+
+
+    
+    </main>
+    <footer>
+      ...
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="{{ STATIC_URL }}/static/bootstrp/dist/js/bootstrap.js"></script>
+    
   </body>
 </html>

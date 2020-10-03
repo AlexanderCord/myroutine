@@ -2,25 +2,15 @@
 
 {% block content %}
 
- {% if user.is_authenticated %}
-      <p>Logged as {{ user.username }}</p>
-      <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+    {% if task_list  %}
+        <ul>
+        {% for task in task_list %}
+            <li><a href="{% url 'task' task.id %}">#{{task.id}} [{{task.category_id}}] {{ task.task }} - every  {{ task.period }} days, started {{ task.start_date }}, next date {{ task.schedule.next_date }} </a></li>
+        {% endfor %}
+        </ul>
     {% else %}
-      <a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}">
-        Login
-      </a>
+        <p>No tasks are available.</p>
     {% endif %}
-
-
-{% if task_list  %}
-    <ul>
-    {% for task in task_list %}
-        <li><a href="{% url 'task' task.id %}">#{{task.id}} [{{task.category_id}}] {{ task.task }} - every  {{ task.period }} days, started {{ task.start_date }}, next date {{ task.schedule.next_date }} </a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No tasks are available.</p>
-{% endif %}
 
 
 {% endblock %}
