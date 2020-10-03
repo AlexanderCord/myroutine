@@ -28,6 +28,9 @@ class AuthenticationMiddleware(object):
         ])
         return ['You are unauthorized and forbidden to view this resource.'.encode()]
     def __call__(self, environ, start_response):
+        if not "api" in environ.get("PATH_INFO"):
+            return self.app(environ, start_response)
+        
         authorization = environ.get('HTTP_AUTHORIZATION', None)
         if not authorization:
             return self.__unauthorized(start_response)
