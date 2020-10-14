@@ -113,10 +113,11 @@ UI AJAX Methods
 
 def ajax_task_done(request):
     task_id = int(request.GET.get('task_id', None))
-    TA._completeTask(task_id)
+    next_date_val = TA._completeTask(task_id)
 
     data = {
-        'result': ("Task %d marked as done" % task_id)
+        'result': ("Task %d marked as done" % task_id),
+        'next_date_val': datetime.strptime(next_date_val, '%Y-%m-%d').strftime('%b %d, %Y')  
     }
 
     return JsonResponse(data)
@@ -124,9 +125,10 @@ def ajax_task_done(request):
 def ajax_task_postpone(request):
     task_id = int(request.GET.get('task_id', None))
     delay_shift = int(request.GET.get('delay_shift', None))
-    TA._postponeTask(task_id, delay_shift)
+    next_date_val = TA._postponeTask(task_id, delay_shift)
     data = {
-        'result': ("Task %d postponed for %d days" % (task_id, delay_shift))
+        'result': ("Task %d postponed for %d days" % (task_id, delay_shift)),
+        'next_date_val': datetime.strptime(next_date_val, '%Y-%m-%d').strftime('%b %d, %Y')  
     }
 
     return JsonResponse(data)

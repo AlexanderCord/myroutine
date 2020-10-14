@@ -11,7 +11,7 @@
 <li>Period: {{task.period}}</li>
 <li>Start date: {{task.start_date}}</li>
 {% if task.schedule.next_date %}
-<li>Next scheduled date: {{task.schedule.next_date}}</li>
+<li>Next scheduled date: <span id="next_date_val">{{task.schedule.next_date}}</span></li>
 {% else %}
 <li>Set start date to begin schedule: <form action="{% url 'task_start' task_id %}" method="post">{% csrf_token %}<input type="date" name="start_date"> <input type="submit" value="Set"></form></li>
 
@@ -65,6 +65,8 @@ $(document).ready(function() {
             if (data.result) {
                 console.log("Result:" + data.result);
                 message_box.text(data.result);
+                $('#next_date_val').text(data.next_date_val);
+
                 
             } else {
                 console.log("Error has occured during request");
@@ -96,6 +98,7 @@ $(document).ready(function() {
                 
                 console.log("Result:" + data.result);
                 message_box.text(data.result);
+                $('#next_date_val').text(data.next_date_val);
                 
             } else {
                 console.log("Error has occured during request");
