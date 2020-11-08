@@ -24,6 +24,8 @@ urlpatterns = [
     
     path('ajax/task/postpone', views.ajax_task_postpone, name = 'ajax_task_postpone'),
     
+    path('ajax/task/history', views.ajax_task_history, name = 'ajax_task_history'),
+    
 
     path('', include('social_django.urls', namespace='social')),
     path('signout/', views.signout,  name='signout'),

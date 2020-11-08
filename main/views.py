@@ -134,6 +134,21 @@ def ajax_task_postpone(request):
     return JsonResponse(data)
 
 
+def ajax_task_history(request):
+
+    template = loader.get_template('main/ajax_task_history.html')
+    task_id = int(request.GET.get('task_id', None))
+    task_row = Task.objects.get(pk=task_id)
+        
+    log_row =  Changelog.objects.filter(task_id = task_id).order_by('-id')[:20] 
+    
+    context = {
+        'task_id': task_id,
+        'task' : task_row,
+        'log': log_row,
+        'action_enum': {TASK_LOG_START : 'started', TASK_LOG_POSTPONE : 'postponed' , TASK_LOG_DONE : 'marked as done' }
+    }
+    return HttpResponse(template.render(context, request))
 
 
 
