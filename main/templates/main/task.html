@@ -52,6 +52,30 @@ History:
 {% block javascript %}
  <script type="text/javascript">
 $(document).ready(function() {
+    function refreshHistory(task_id) {
+        $.ajax({
+            url: '/ajax/task/history',
+            data: {
+                'task_id' : task_id,
+            },
+            dataType: 'html',
+            success: function (data) {
+            if (data) {
+                
+                // console.log("Result:" + data);
+                $('#task_history').html(data);
+                
+            } else {
+                console.log("Error has occured during request");
+            }
+
+        }
+        });
+    
+    }
+
+
+
      $("#link_task_done").click(function () {
         task_id = $(this).attr('task-id')
         console.log( ' marking as done  task_id ' + task_id  );
@@ -77,6 +101,7 @@ $(document).ready(function() {
             message_box.fadeIn('slow', function(){
                 message_box.delay(5000).fadeOut(); 
             });
+            refreshHistory(task_id);
 
         }
         });
@@ -109,11 +134,14 @@ $(document).ready(function() {
             message_box.fadeIn('slow', function(){
                 message_box.delay(5000).fadeOut(); 
             });
+            refreshHistory(task_id);
 
         }
         });
         return false;
     });
+
+
 });    
 </script>
 
