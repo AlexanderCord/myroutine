@@ -7,7 +7,7 @@ from .serializers import *
 from .models import *
 from datetime import datetime  
 from datetime import timedelta
-
+from django.db import *
 from django.contrib.auth import logout
 
 from .static import *
@@ -179,6 +179,9 @@ UI - adding new task
 """
 from .forms import NewTaskForm
 
+from datetime import date
+
+
 def task_add(request):
 
     # task_list = Task.objects.order_by('-id')[:5]
@@ -194,11 +197,35 @@ def task_add(request):
             # process the data in form.cleaned_data as required
             # redirect to a new URL:
             
-            result = "Task has been added " + form.cleaned_data['task'] + str(form.cleaned_data['start_date'])
-            Task 
+            result = "Task has been added" 
+            # @todo move to action file + use correct fields from model
             
-                                                                                
-            # if a GET (or any other method) we'll create a blank form
+            try:
+
+                print("saving task".encode('utf-8'))
+            
+                qs = Task.objects.create(
+                    user_id = Author.objects.get(pk=1), 
+                    category_id = form.cleaned_data['category'], #Category.objects.get(pk = form.cleaned_data['category']), 
+                    task = form.cleaned_data['task'],
+                    start_date = date.today(), 
+                    period = form.cleaned_data['period'] #Period.objects.get(pk = form.cleaned_data['period']) 
+                          
+                )
+                qs.save()
+
+
+            except Error as e:
+                print(str(e))
+            
+                result = "Error during save"
+                
+                raise Http404("Error during save")
+            
+            print(str(qs).encode("utf-8"))
+            
+            
+            form = ""                                                                    
     else:
         
         form = NewTaskForm()
@@ -207,6 +234,7 @@ def task_add(request):
     context = {
         'form': form,
         'result' : result,
+        
     }
     return HttpResponse(template.render(context, request))
 
