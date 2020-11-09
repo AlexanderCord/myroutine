@@ -173,19 +173,40 @@ def task(request, task_id):
 
 
 
+
+"""
+UI - adding new task
+"""
+from .forms import NewTaskForm
+
 def task_add(request):
 
-    task_id = 15
     # task_list = Task.objects.order_by('-id')[:5]
     template = loader.get_template('main/task_add.html')
-    task_row = Task.objects.get(pk=task_id)
-    log_row = Changelog.objects.filter(task_id = task_id).order_by('-id')[:20]
+
+    result = ""
+    
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NewTaskForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # redirect to a new URL:
+            
+            result = "Task has been added " + form.cleaned_data['task'] + str(form.cleaned_data['start_date'])
+            Task 
+            
+                                                                                
+            # if a GET (or any other method) we'll create a blank form
+    else:
+        
+        form = NewTaskForm()
+
     
     context = {
-        'task_id': task_id,
-        'task' : task_row,
-        'log': log_row,
-        'action_enum': {TASK_LOG_START : 'started', TASK_LOG_POSTPONE : 'postponed' , TASK_LOG_DONE : 'marked as done' }
+        'form': form,
+        'result' : result,
     }
     return HttpResponse(template.render(context, request))
 
