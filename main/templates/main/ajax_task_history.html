@@ -1,0 +1,11 @@
+{% block content %}
+<ul>
+{% load custom_tags %}
+
+{% for log_item in log %}
+<li>{{log_item.log_date}}: {{action_enum|get_item:log_item.action}}</li>
+{% endfor %}
+
+</ul>
+
+{% endblock %}
