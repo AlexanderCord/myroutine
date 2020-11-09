@@ -17,6 +17,8 @@ urlpatterns = [
     path('task/<int:task_id>/postpone/<int:delay_shift>', views.task_postpone, name = 'task_postpone'),
 
     path('task/<int:task_id>/start', views.task_start, name = 'task_start'),
+
+    path('task/add', views.task_add, name = 'task_add'),
     
     path('authorize', views.authorize, name = 'authorize'),    
 

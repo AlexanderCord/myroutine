@@ -1,6 +1,7 @@
 {% extends 'main/base.html' %}
 
 {% block content %}
+<a class="btn btn-primary" href="{% url 'task_add' %}">Add Task</a>
 
     {% if task_list  %}
         <ul>

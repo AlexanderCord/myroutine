@@ -172,6 +172,28 @@ def task(request, task_id):
     return HttpResponse(template.render(context, request))
 
 
+
+def task_add(request):
+
+    task_id = 15
+    # task_list = Task.objects.order_by('-id')[:5]
+    template = loader.get_template('main/task_add.html')
+    task_row = Task.objects.get(pk=task_id)
+    log_row = Changelog.objects.filter(task_id = task_id).order_by('-id')[:20]
+    
+    context = {
+        'task_id': task_id,
+        'task' : task_row,
+        'log': log_row,
+        'action_enum': {TASK_LOG_START : 'started', TASK_LOG_POSTPONE : 'postponed' , TASK_LOG_DONE : 'marked as done' }
+    }
+    return HttpResponse(template.render(context, request))
+
+
+
+
+
+
 def authorize(request):
     template = loader.get_template('main/authorize.html')
     return HttpResponse(template.render(None, request))
