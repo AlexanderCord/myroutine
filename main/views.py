@@ -111,6 +111,22 @@ def task_done(request, task_id):
 UI AJAX Methods 
 """
 
+def ajax_task_start(request):
+    task_id = int(request.GET.get('task_id', None))
+
+    start_date = request.GET.get('start_date', None)
+    
+    next_date_val = TA._startTask(task_id, start_date)
+        
+
+    data = {
+        'result': ("Task %d has now start date %s" % (task_id, start_date)),
+        'next_date_val': datetime.strptime(next_date_val, '%Y-%m-%d').strftime('%b %d, %Y')  
+    }
+
+    return JsonResponse(data)
+
+
 def ajax_task_done(request):
     task_id = int(request.GET.get('task_id', None))
     next_date_val = TA._completeTask(task_id)

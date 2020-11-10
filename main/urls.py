@@ -24,6 +24,8 @@ urlpatterns = [
 
     path('ajax/task/done', views.ajax_task_done, name = 'ajax_task_done'),
     
+    path('ajax/task/start', views.ajax_task_start, name = 'ajax_task_start'),
+    
     path('ajax/task/postpone', views.ajax_task_postpone, name = 'ajax_task_postpone'),
     
     path('ajax/task/history', views.ajax_task_history, name = 'ajax_task_history'),

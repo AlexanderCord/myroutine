@@ -123,4 +123,5 @@ def _startTask(task_id, start_date):
         raise Http404("Task_id parameter should be set")
 
 
+    return start_date
 
