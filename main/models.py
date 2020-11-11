@@ -17,6 +17,9 @@ class Category(models.Model):
 class Period(models.Model):
     name = models.CharField('Task period type',max_length=250)
 
+    days = models.IntegerField(default=0)
+
+
     def __str__(self):
         return self.name
 
