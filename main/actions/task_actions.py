@@ -64,6 +64,10 @@ def _completeTask(task_id):
     if task_id is not None:
         
         try:
+            task_original = Task.objects.select_related('period').get(pk = task_id)
+            delay_shift = task_original.period.days
+            print("Delay shift from db %d" % delay_shift)
+            
             qs = Schedule.objects.get(task_id=task_id)
             qs.next_date = qs.next_date + timedelta(days=delay_shift) 
             next_date_val = str(qs.next_date)

@@ -4,7 +4,7 @@ from . import models
 
 class PeriodSerializer(serializers.ModelSerializer):
     class Meta:        
-        fields = ('id', 'name')
+        fields = ('id', 'name', 'days')
         model = models.Period
 
 
