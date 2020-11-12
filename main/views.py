@@ -9,6 +9,8 @@ from datetime import datetime
 from datetime import timedelta
 from django.db import *
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
+
 
 from .static import *
 
@@ -83,18 +85,136 @@ class TaskDetail(generics.RetrieveAPIView):
     serializer_class = TaskSerializer
 
 
+
+##################################
+# UI 
+##################################
+
 """
-Regular UI
+MAIN PAGE
 """
 
 def index(request):
-    task_list = Task.objects.filter(active=True).order_by('-id')
+    if request.user.is_authenticated:
+    
+        task_list = Task.objects.filter(active=True, user_id = request.user.id).order_by('-id')
+    else:
+        task_list = []
     template = loader.get_template('main/index.html')
     context = {
         'task_list': task_list,
     }
     return HttpResponse(template.render(context, request))
 
+
+"""
+TASK DETAILS PAGE
+"""
+
+def task(request, task_id):
+
+
+    # task_list = Task.objects.order_by('-id')[:5]
+    template = loader.get_template('main/task.html')
+    if request.user.is_authenticated:
+        try:
+            task_row = Task.objects.get(pk=task_id, user_id = request.user.id)
+            log_row = Changelog.objects.filter(task_id = task_id).order_by('-id')[:20]
+        except Task.DoesNotExist:
+            raise Http404("Task doesn't exist")
+        except DatabaseError as e:
+            print(str(e))
+                                
+            raise Http404("Error during loading task")
+    else:
+        task_row = []
+        log_row = []
+        
+    context = {
+        'task_id': task_id,
+        'task' : task_row,
+        'log': log_row,
+        'action_enum': {TASK_LOG_START : 'started', TASK_LOG_POSTPONE : 'postponed' , TASK_LOG_DONE : 'marked as done' }
+    }
+    return HttpResponse(template.render(context, request))
+
+
+
+
+"""
+ADD NEW TASK PAGE 
+"""
+from .forms import NewTaskForm
+
+from datetime import date
+
+
+def task_add(request):
+
+    # task_list = Task.objects.order_by('-id')[:5]
+    template = loader.get_template('main/task_add.html')
+
+    result = ""
+    
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NewTaskForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # redirect to a new URL:
+            
+            result = "Task has been added" 
+            # @todo move to action file + use correct fields from model
+            
+            try:
+
+                print("saving task".encode('utf-8'))
+            
+                qs = Task.objects.create(
+                    user_id =  User.objects.get(pk=request.user.id), 
+                    category_id = form.cleaned_data['category'], #Category.objects.get(pk = form.cleaned_data['category']), 
+                    task = form.cleaned_data['task'],
+                    start_date = date.today(), 
+                    period = form.cleaned_data['period'] #Period.objects.get(pk = form.cleaned_data['period']) 
+                          
+                )
+                qs.save()
+
+
+            except Error as e:
+                print(str(e))
+            
+                result = "Error during save"
+                
+                raise Http404("Error during save")
+            
+            print(str(qs).encode("utf-8"))
+            
+            
+            form = ""                                                                    
+    else:
+        
+        form = NewTaskForm()
+
+    
+    context = {
+        'form': form,
+        'result' : result,
+        
+    }
+    return HttpResponse(template.render(context, request))
+
+
+
+
+
+##################################
+# AJAX METHODS AND HELPERS 
+##################################
+
+
+# @todo - insert check for authorization + user_id task ownership task into all actions / ajax methods/ API
 
 def task_start(request, task_id):
     start_date = request.POST.get('start_date', None)
@@ -104,6 +224,7 @@ def task_start(request, task_id):
     return HttpResponse("Task %d now has start date %s, <a href='javascript:history.go(-1)'>Go back</a>" % (task_id, start_date))
 
 def task_done(request, task_id):
+
     TA._completeTask(task_id)
     return HttpResponse("Task %d marked as done, <a href='javascript:history.go(-1)'>Go back</a>" % task_id)
 
@@ -171,88 +292,6 @@ def ajax_task_history(request):
 def task_postpone(request, task_id, delay_shift):
     TA._postponeTask(task_id, delay_shift)
     return HttpResponse("Task %d postponed for %d days, <a href='javascript:history.go(-1)'>Go back</a>" % (task_id, delay_shift))
-
-def task(request, task_id):
-
-    # task_list = Task.objects.order_by('-id')[:5]
-    template = loader.get_template('main/task.html')
-    task_row = Task.objects.get(pk=task_id)
-    log_row = Changelog.objects.filter(task_id = task_id).order_by('-id')[:20]
-    
-    context = {
-        'task_id': task_id,
-        'task' : task_row,
-        'log': log_row,
-        'action_enum': {TASK_LOG_START : 'started', TASK_LOG_POSTPONE : 'postponed' , TASK_LOG_DONE : 'marked as done' }
-    }
-    return HttpResponse(template.render(context, request))
-
-
-
-
-"""
-UI - adding new task
-"""
-from .forms import NewTaskForm
-
-from datetime import date
-
-
-def task_add(request):
-
-    # task_list = Task.objects.order_by('-id')[:5]
-    template = loader.get_template('main/task_add.html')
-
-    result = ""
-    
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = NewTaskForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # redirect to a new URL:
-            
-            result = "Task has been added" 
-            # @todo move to action file + use correct fields from model
-            
-            try:
-
-                print("saving task".encode('utf-8'))
-            
-                qs = Task.objects.create(
-                    user_id = Author.objects.get(pk=1), 
-                    category_id = form.cleaned_data['category'], #Category.objects.get(pk = form.cleaned_data['category']), 
-                    task = form.cleaned_data['task'],
-                    start_date = date.today(), 
-                    period = form.cleaned_data['period'] #Period.objects.get(pk = form.cleaned_data['period']) 
-                          
-                )
-                qs.save()
-
-
-            except Error as e:
-                print(str(e))
-            
-                result = "Error during save"
-                
-                raise Http404("Error during save")
-            
-            print(str(qs).encode("utf-8"))
-            
-            
-            form = ""                                                                    
-    else:
-        
-        form = NewTaskForm()
-
-    
-    context = {
-        'form': form,
-        'result' : result,
-        
-    }
-    return HttpResponse(template.render(context, request))
 
 
 
