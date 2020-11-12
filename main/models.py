@@ -1,4 +1,7 @@
 from django.db import models
+#from django.contrib.auth.models import User
+from django.conf import settings
+
 
 
 class Author(models.Model):
@@ -27,7 +30,7 @@ class Period(models.Model):
     
 
 class Task(models.Model):
-    user_id = models.ForeignKey('Author', on_delete=models.CASCADE, null = True)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null = True)
     category_id = models.ForeignKey('Category', on_delete=models.CASCADE, null=True)
     
     
