@@ -4,11 +4,6 @@ from django.conf import settings
 
 
 
-class Author(models.Model):
-    login = models.CharField(max_length=250)
-    def __str__(self):
-        return self.login
-
 
 class Category(models.Model):
     name = models.CharField('Task period name',max_length=250)
@@ -30,14 +25,14 @@ class Period(models.Model):
     
 
 class Task(models.Model):
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null = True)
-    category_id = models.ForeignKey('Category', on_delete=models.CASCADE, null=True)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,  null = True)
+    category_id = models.ForeignKey('Category',  on_delete=models.SET_NULL, null=True)
     
     
     task = models.CharField(max_length=250)
     start_date = models.DateField('initial date')
     active = models.BooleanField('Active', default = True)
-    period = models.ForeignKey('Period', on_delete=models.CASCADE, null= True)
+    period = models.ForeignKey('Period',  on_delete=models.SET_NULL, null= True)
     period_data = models.IntegerField("Period data", default=0)
 
     def __str__(self):
