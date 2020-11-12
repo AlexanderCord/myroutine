@@ -61,7 +61,3 @@ class TaskList(generics.ListAPIView):
         print(str(queryset.query))
         return queryset
     
-
-class TaskDetail(generics.RetrieveAPIView):
-    queryset = Task.objects.all()
-    serializer_class = TaskSerializer

@@ -11,6 +11,5 @@ urlpatterns = [
     path('task/postpone/', views.TaskPostpone.as_view()),
     path('task/done/', views.TaskDone.as_view()),
     path('task/changelog/', views.TaskChangelog.as_view()),
-    path('task/detail/<int:task_id>/', views.TaskDetail.as_view()),
 
 ]
