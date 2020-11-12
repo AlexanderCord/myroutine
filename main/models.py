@@ -41,7 +41,7 @@ class Task(models.Model):
     period_data = models.IntegerField("Period data", default=0)
 
     def __str__(self):
-        return self.task
+        return str(self.user_id) + "-" + self.task 
 
 
 class Schedule(models.Model):
