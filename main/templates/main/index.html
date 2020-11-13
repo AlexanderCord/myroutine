@@ -6,22 +6,18 @@
     {% if task_list  %}
     
         <div id ="filter_block"> 
-        {% if filter_category_id == -1 %}
-        All <span id="total_task_count"></span>&nbsp;
-        {% else %}
-        <a href="/">All <span id="total_task_count"></span></a>&nbsp;
+        {% if not filter_category_id == -1 %}
+        <a href="/">
         {% endif %}
+        All <span id="total_task_count"></span>
+        {% if not filter_category_id == -1 %}
+        </a>
+        {% endif %}&nbsp;
         {% for category in category_list %}
-            {% if category.category_id == filter_category_id %}
-        
-            {{category.category_id__name}} ({{category.task_count}})&nbsp;
-            
-            {% else %}
-            <a href="/?category_id={{category.category_id}}">{{category.category_id__name}} (<span class="task_category_count">{{category.task_count}}</span>)</a>&nbsp;
-            
+            {% if not category.category_id == filter_category_id %}
+            <a href="/?category_id={{category.category_id}}">
             {% endif %}
-        
-        
+            {{category.category_id__name}} (<span class="task_category_count">{{category.task_count}}</span>){% if not category.category_id == filter_category_id %}</a>{% endif %}&nbsp;        
         {% endfor %}
         </div>
         <ul>
@@ -34,4 +30,9 @@
     {% endif %}
 
 
+{% endblock %}
+
+{% block javascript %}
+<script src="{{STATIC_URL}}/static/main_page.js">
+</script>
 {% endblock %}
