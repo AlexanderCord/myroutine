@@ -40,10 +40,19 @@ MAIN PAGE
 """
 
 def index(request):
+    filter_category_id = -1
+    
     if request.user.is_authenticated:
     
-        task_list = Task.objects.filter(active=True, user_id = request.user.id).order_by('-id')
-        category_list = Task.objects.select_related("category_id__name").values("category_id","category_id__name").order_by("-task_count").annotate(task_count = Count("id"))
+    
+        filter_category_id = int(request.GET.get('category_id', -1))
+        if filter_category_id == -1:
+            task_list = Task.objects.filter(active=True, user_id = request.user.id).order_by('-id')
+        else:
+            #filter by category
+            task_list = Task.objects.select_related("category_id").filter(active=True, category_id = Category.objects.get(pk=filter_category_id),user_id = request.user.id).order_by('-id')
+        
+        category_list = Task.objects.select_related("category_id__name").values("category_id","category_id__name").filter(active=True, user_id = request.user.id).order_by("-task_count").annotate(task_count = Count("id"))
         #print(category_list)
     else:
         task_list = []
@@ -51,7 +60,8 @@ def index(request):
     template = loader.get_template('main/index.html')
     context = {
         'task_list': task_list,
-        'category_list' : category_list
+        'category_list' : category_list,
+        'filter_category_id' : filter_category_id,
     }
     return HttpResponse(template.render(context, request))
 

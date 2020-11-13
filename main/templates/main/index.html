@@ -2,16 +2,26 @@
 
 {% block content %}
 <a class="btn btn-primary" href="{% url 'task_add' %}">Add Task</a>
-
-
-
-
-
+    
     {% if task_list  %}
     
-        <div id ="filter_block"> All 
+        <div id ="filter_block"> 
+        {% if filter_category_id == -1 %}
+        All <span id="total_task_count"></span>&nbsp;
+        {% else %}
+        <a href="/">All <span id="total_task_count"></span></a>&nbsp;
+        {% endif %}
         {% for category in category_list %}
-        {{category.category_id__name}} ({{category.task_count}}) | 
+            {% if category.category_id == filter_category_id %}
+        
+            {{category.category_id__name}} ({{category.task_count}})&nbsp;
+            
+            {% else %}
+            <a href="/?category_id={{category.category_id}}">{{category.category_id__name}} (<span class="task_category_count">{{category.task_count}}</span>)</a>&nbsp;
+            
+            {% endif %}
+        
+        
         {% endfor %}
         </div>
         <ul>

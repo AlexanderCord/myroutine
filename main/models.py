@@ -26,7 +26,7 @@ class Period(models.Model):
 
 class Task(models.Model):
     user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,  null = True)
-    category_id = models.ForeignKey('Category',  on_delete=models.SET_NULL, null=True, related_name="category")
+    category_id = models.ForeignKey('Category',  on_delete=models.SET_NULL, null=True)
     
     
     task = models.CharField(max_length=250)
