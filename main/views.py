@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from .static import *
 
 import main.actions.task_actions as TA
+from django.db.models import Count
 
 """
 Google OAuth logout
@@ -42,11 +43,15 @@ def index(request):
     if request.user.is_authenticated:
     
         task_list = Task.objects.filter(active=True, user_id = request.user.id).order_by('-id')
+        category_list = Task.objects.select_related("category_id__name").values("category_id","category_id__name").order_by("-task_count").annotate(task_count = Count("id"))
+        #print(category_list)
     else:
         task_list = []
+        category_list = []
     template = loader.get_template('main/index.html')
     context = {
         'task_list': task_list,
+        'category_list' : category_list
     }
     return HttpResponse(template.render(context, request))
 

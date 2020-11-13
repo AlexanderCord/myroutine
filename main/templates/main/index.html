@@ -3,7 +3,17 @@
 {% block content %}
 <a class="btn btn-primary" href="{% url 'task_add' %}">Add Task</a>
 
+
+
+
+
     {% if task_list  %}
+    
+        <div id ="filter_block"> All 
+        {% for category in category_list %}
+        {{category.category_id__name}} ({{category.task_count}}) | 
+        {% endfor %}
+        </div>
         <ul>
         {% for task in task_list %}
             <li><a href="{% url 'task' task.id %}">#{{task.id}} [{{task.category_id}}] {{ task.task }} - {{ task.schedule.next_date }} </a></li>
