@@ -166,7 +166,12 @@ def task_add(request):
 
 
 
+def archive(request):
+    return HttpResponse("Archive")
 
+
+def archive_detail(request, task_id):
+    return HttpResponse("Archive task %d" % task_id)
 
 ##################################
 # AJAX METHODS AND HELPERS 

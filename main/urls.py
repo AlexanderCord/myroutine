@@ -30,6 +30,9 @@ urlpatterns = [
     
     path('ajax/task/history', views.ajax_task_history, name = 'ajax_task_history'),
     
+    path('archive', views.archive, name='archive'),
+    
+    path('archive/<int:task_id>', views.archive_detail, name='archive_detail'),
 
     path('', include('social_django.urls', namespace='social')),
     path('signout/', views.signout,  name='signout'),
