@@ -66,6 +66,8 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 
+
+
 """
 TASK DETAILS PAGE
 """
@@ -165,13 +167,58 @@ def task_add(request):
     return HttpResponse(template.render(context, request))
 
 
+"""
+ARCHIVE PAGE
+"""
 
 def archive(request):
-    return HttpResponse("Archive")
+    
+    if request.user.is_authenticated:
+        task_list = Task.objects.filter(active=False, user_id = request.user.id).order_by('-id')
+    else:
+        task_list = []
+    template = loader.get_template('main/archive.html')
+    context = {
+        'task_list': task_list,
+    }
+    return HttpResponse(template.render(context, request))
 
+
+
+
+"""
+ARCHIVE DETAILS PAGE
+"""
 
 def archive_detail(request, task_id):
-    return HttpResponse("Archive task %d" % task_id)
+
+
+    # task_list = Task.objects.order_by('-id')[:5]
+    template = loader.get_template('main/archive_detail.html')
+    if request.user.is_authenticated:
+        try:
+            task_row = Task.objects.get(pk=task_id, user_id = request.user.id)
+            log_row = Changelog.objects.filter(task_id = task_id).order_by('-id')[:20]
+        except Task.DoesNotExist:
+            raise Http404("Task doesn't exist")
+        except DatabaseError as e:
+            print(str(e))
+                                
+            raise Http404("Error during loading task")
+    else:
+        task_row = []
+        log_row = []
+        
+    context = {
+        'task_id': task_id,
+        'task' : task_row,
+        'log': log_row,
+        'action_enum': {TASK_LOG_START : 'started', TASK_LOG_POSTPONE : 'postponed' , TASK_LOG_DONE : 'marked as done' , TASK_LOG_ARCHIVE : 'archived'}
+    }
+    return HttpResponse(template.render(context, request))
+
+
+
 
 ##################################
 # AJAX METHODS AND HELPERS 
@@ -235,6 +282,16 @@ def ajax_task_postpone(request):
     return JsonResponse(data)
 
 
+def ajax_task_archive(request):
+    task_id = int(request.GET.get('task_id', None))
+    TA._archiveTask(task_id)
+    data = {
+        'result': ("Task %d has been archived" % (task_id)),
+    }
+    
+    return JsonResponse(data)
+
+
 def ajax_task_history(request):
 
     template = loader.get_template('main/ajax_task_history.html')
@@ -247,7 +304,7 @@ def ajax_task_history(request):
         'task_id': task_id,
         'task' : task_row,
         'log': log_row,
-        'action_enum': {TASK_LOG_START : 'started', TASK_LOG_POSTPONE : 'postponed' , TASK_LOG_DONE : 'marked as done' }
+        'action_enum': {TASK_LOG_START : 'started', TASK_LOG_POSTPONE : 'postponed' , TASK_LOG_DONE : 'marked as done' , TASK_LOG_ARCHIVE : 'archived'}
     }
     return HttpResponse(template.render(context, request))
 
@@ -256,6 +313,13 @@ def ajax_task_history(request):
 def task_postpone(request, task_id, delay_shift):
     TA._postponeTask(task_id, delay_shift)
     return HttpResponse("Task %d postponed for %d days, <a href='javascript:history.go(-1)'>Go back</a>" % (task_id, delay_shift))
+
+
+def task_archive(request, task_id):
+    TA._archiveTask(task_id)
+    return HttpResponse("Task %d has been archived, <a href='javascript:history.go(-1)'>Go back</a>" % (task_id))
+
+
 
 
 

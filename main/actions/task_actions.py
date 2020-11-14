@@ -55,7 +55,36 @@ def _postponeTask(task_id, delay_shift):
 
     return next_date_val
 
-# @todo delay_shift should be loaded from Task properties
+def _archiveTask(task_id):
+
+
+    if task_id is not None:
+        
+        try:
+            task_original = Task.objects.get(pk = task_id)
+            task_original.active = False
+            task_original.save()
+            
+            print("saving changelog".encode('utf-8'))
+            qs2 = Changelog.objects.create(task_id = task_original, action = TASK_LOG_ARCHIVE)
+            qs2.save()
+
+        except Task.DoesNotExist:
+            raise Http404("Task does not exist")
+
+        except DatabaseError as e:
+            print(str(e))
+            
+            raise Http404("Error during save")
+            
+        print(str(task_original).encode("utf-8"))
+        print(str(qs2).encode("utf-8"))
+
+    else:
+        raise Http404("Task_id parameter should be set")
+
+
+
 def _completeTask(task_id):
 
     delay_shift = 7
@@ -93,6 +122,7 @@ def _completeTask(task_id):
         raise Http404("Task_id parameter should be set")
 
     return next_date_val
+
 
 
 def _startTask(task_id, start_date):

@@ -1,0 +1,42 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+
+<h3>[ARCHIVE] Task #{{ task_id }} [{{task.category_id}}] {{task.task}} </h3>
+
+<div id="message" style="display:none;">Hello!</div>
+
+<ul>
+<li>Period: {{task.period}}</li>
+<li>Start date: {{task.start_date}}</li>
+{% if task.schedule.next_date %}
+<li>Next scheduled date: <span id="next_date_val">{{task.schedule.next_date}}</span></li>
+{% else %}
+
+<li>Task has not next date set</li>
+
+{% endif %}
+
+
+</ul>
+
+<br>
+History:
+<div id="task_history">
+<ul>
+{% load custom_tags %}
+
+{% for log_item in log %}
+<li>{{log_item.log_date}}: {{action_enum|get_item:log_item.action}}</li>
+{% endfor %}
+
+</ul>
+</div>
+
+<br>
+<a href="{% url 'archive' %}">To archive</a> | <a href="/">To the main page</a>
+
+
+{% endblock %}
+

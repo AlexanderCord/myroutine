@@ -1,0 +1,19 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    
+    {% if task_list  %}
+    
+        <ul>
+        {% for task in task_list %}
+            <li><a href="{% url 'archive_detail' task.id %}">#{{task.id}} [{{task.category_id}}] {{ task.task }}  </a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tasks are available.</p>
+    {% endif %}
+
+<p><a href="{% url 'index' %}">To the main page</a></p>
+
+{% endblock %}
+

@@ -128,5 +128,39 @@ $(document).ready(function() {
         return false;
     });
 
+     $("#link_task_archive").click(function () {
+        if(!window.confirm('Do you really want to archive this task?')) {
+            return false;
+        }
+        task_id = $(this).attr('task-id');
+        console.log(' archiving task_id ' + task_id  );
+        message_box = $('#message');
+        $.ajax({
+            url: '/ajax/task/archive',
+            data: {
+                'task_id' : task_id,
+            },
+            dataType: 'json',
+            success: function (data) {
+            if (data.result) {
+                
+                console.log("Result:" + data.result);
+                message_box.text(data.result);
+                
+            } else {
+                console.log("Error has occured during request");
+                message_box.text('Error has occured during request');
+            }
+            message_box.fadeIn('slow', function(){
+                message_box.delay(5000).fadeOut(); 
+            });
+            refreshHistory(task_id);
+
+        }
+        });
+        return false;
+    });
+
+
 
 });    
