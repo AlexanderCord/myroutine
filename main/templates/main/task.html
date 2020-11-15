@@ -16,25 +16,19 @@
 <li><span id="start_date_block">Set start date to begin schedule: <form>{% csrf_token %}<input type="date" name="start_date" id="start_date_val"> <input type="button" task-id="{{task_id}}" id="btn_task_start" value="Set"></form></span></li>
 
 {% endif %}
-
-
-<li><a href="{% url 'task_done' task_id %}" id="link_task_done" task-id="{{task_id}}">Mark as done and get next date</a></li>
-
-
-<li><a href="{% url 'task_postpone' task_id 1 %}" delay-shift="1" class="link_task_postpone" task-id="{{task_id}}">Move for 1 day</a></li>
-
-<li><a href="{% url 'task_postpone' task_id 7 %}"  delay-shift="7" class="link_task_postpone" task-id="{{task_id}}">Postpone for week</a></li>
-
-<li><a href="{% url 'task_postpone' task_id 30 %}"  delay-shift="30" class="link_task_postpone" task-id="{{task_id}}">Postpone for month</a></li>
-
-<li><a href="{% url 'task_archive' task_id %}"  id="link_task_archive" task-id="{{task_id}}">Archive task</a></li>
-
-
-
 </ul>
 
+<p><a class="btn btn-primary" href="{% url 'task_done' task_id %}" id="link_task_done" task-id="{{task_id}}">Mark as done</a></p>
+
+
+<p>Postpone for: <a class="btn btn-light link_task_postpone" href="{% url 'task_postpone' task_id 1 %}" delay-shift="1" task-id="{{task_id}}">1 day</a>
+<a class="btn btn-light link_task_postpone" href="{% url 'task_postpone' task_id 7 %}"  delay-shift="7"  task-id="{{task_id}}">A week</a>
+<a class="btn btn-light link_task_postpone" href="{% url 'task_postpone' task_id 30 %}"  delay-shift="30" task-id="{{task_id}}">A month</a>
+</p>
+
+
 <br>
-History:
+<h5>History:</h5>
 <div id="task_history">
 <ul>
 {% load custom_tags %}
@@ -45,6 +39,8 @@ History:
 
 </ul>
 </div>
+
+<a class="btn btn-info" href="{% url 'task_archive' task_id %}"  id="link_task_archive" task-id="{{task_id}}">Archive task</a></p>
 
 <br>
 <a href="/">To the main page</a>
