@@ -154,7 +154,7 @@ $(document).ready(function() {
             message_box.fadeIn('slow', function(){
                 message_box.delay(5000).fadeOut(); 
             });
-            refreshHistory(task_id);
+            window.setTimeout(window.location.href = '/', 5000);
 
         }
         });
