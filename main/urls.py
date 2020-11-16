@@ -37,6 +37,13 @@ urlpatterns = [
     path('archive', views.archive, name='archive'),
     
     path('archive/<int:task_id>', views.archive_detail, name='archive_detail'),
+    
+    path('category', views.category, name = 'category'),
+    
+    path('category/add', views.category_add, name = 'category_add'),
+    
+    path('category/remove/<int:category_id>', views.category_remove, name = 'category_remove'),
+    
 
     path('', include('social_django.urls', namespace='social')),
     path('signout/', views.signout,  name='signout'),

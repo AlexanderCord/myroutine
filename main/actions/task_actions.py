@@ -159,3 +159,30 @@ def _startTask(task_id, start_date):
 
     return start_date
 
+
+
+
+def _removeCategory(category_id, user_id):
+        
+    default_category_id = 1    
+    if category_id is not None:
+        
+        try:
+        
+            # updating tasks to default category
+            qs = Task.objects.filter(user_id = user_id, category_id = category_id).update(category_id = default_category_id)
+
+            # removing category            
+            qs2 = Category.objects.filter(user_id = user_id, pk = category_id).delete()
+        except DatabaseError as e:
+            print(str(e).encode("utf-8"))
+            
+            raise Http404("Error during save")
+            
+        print(str(qs).encode("utf-8"))
+        print(str(qs2).encode("utf-8"))
+        
+
+    else:
+        raise Http404("Category_id parameter should be set")
+
