@@ -8,6 +8,8 @@ from django.conf import settings
 class Category(models.Model):
     name = models.CharField('Task period name',max_length=250)
 
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,  null = True)
+
     def __str__(self):
         return self.name
 
