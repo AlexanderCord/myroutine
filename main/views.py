@@ -168,6 +168,71 @@ def task_add(request):
 
 
 """
+TASK EDIT PAGE
+"""
+
+def task_edit(request,task_id):
+
+    # task_list = Task.objects.order_by('-id')[:5]
+    template = loader.get_template('main/task_edit.html')
+
+    result = ""
+    task_row = Task.objects.get(pk=task_id, user_id = request.user.id)
+    
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NewTaskForm(request.POST, user=request.user)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # redirect to a new URL:
+            
+            result = "Task has been updated"
+            # @todo move to action file + use correct fields from model
+            
+            try:
+
+                print("saving task".encode('utf-8'))
+            
+                qs = Task.objects.filter(pk = task_id).update(
+                    category_id = form.cleaned_data['category'], #Category.objects.get(pk = form.cleaned_data['category']), 
+                    task = form.cleaned_data['task'],
+                    period = form.cleaned_data['period'] #Period.objects.get(pk = form.cleaned_data['period']) 
+                          
+                )
+
+
+            except Error as e:
+                print(str(e))
+            
+                result = "Error during save"
+                
+                raise Http404("Error during save")
+            
+            print(str(qs).encode("utf-8"))
+            
+            
+            form = ""                                                                    
+    else:
+        
+        form = NewTaskForm(user=request.user, initial = {'task' : task_row.task, 'category' : task_row.category_id, 'period' : task_row.period   })
+
+    
+    context = {
+        'form': form,
+        'result' : result,
+        'task_id' : task_id,
+        'task' : task_row
+        
+    }
+    return HttpResponse(template.render(context, request))
+
+
+
+
+
+
+"""
 ARCHIVE PAGE
 """
 
