@@ -367,6 +367,62 @@ def category_add(request):
     return HttpResponse(template.render(context, request))
 
 
+"""
+CATEGORY EDIT PAGE
+"""
+
+def category_edit(request, category_id):
+    template = loader.get_template('main/category_edit.html')
+
+    result = ""
+    category_row = Category.objects.get(pk=category_id, user_id = request.user.id)
+    
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NewCategoryForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # redirect to a new URL:
+            
+            result = "Category has been added" 
+            # @todo move to action file + use correct fields from model
+            
+            try:
+
+                print("saving category".encode('utf-8'))
+            
+                qs = Category.objects.filter(pk=category_id).update(
+                    name = form.cleaned_data['name']
+                )
+
+
+            except Error as e:
+                print(str(e))
+            
+                result = "Error during save"
+                
+                raise Http404("Error during save")
+            
+            print(str(qs).encode("utf-8"))
+            
+            
+            form = ""                                                                    
+    else:
+        
+        form = NewCategoryForm(initial = {'name' : category_row.name})
+
+    
+    context = {
+        'form': form,
+        'result' : result,
+        'category_id' : category_id,
+        'category' : category_row
+        
+    }
+    return HttpResponse(template.render(context, request))
+
+
 
 ##################################
 # AJAX METHODS AND HELPERS 

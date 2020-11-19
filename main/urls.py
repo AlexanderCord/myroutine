@@ -44,10 +44,13 @@ urlpatterns = [
     
     path('category/add', views.category_add, name = 'category_add'),
     
+    path('category/edit/<int:category_id>', views.category_edit, name='category_edit'), 
+
     path('category/remove/<int:category_id>', views.category_remove, name = 'category_remove'),
     
 
     path('', include('social_django.urls', namespace='social')),
+    
     path('signout/', views.signout,  name='signout'),
 
 
