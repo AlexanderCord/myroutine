@@ -35,6 +35,8 @@ urlpatterns = [
     path('ajax/task/history', views.ajax_task_history, name = 'ajax_task_history'),
     
     path('ajax/task/archive', views.ajax_task_archive, name = 'ajax_task_archive'),
+
+    path('ajax/category/remove', views.ajax_category_remove, name = 'ajax_category_remove'),
     
     path('archive', views.archive, name='archive'),
     

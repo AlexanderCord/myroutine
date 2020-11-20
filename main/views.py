@@ -514,6 +514,18 @@ def ajax_task_history(request):
 
 
 
+def ajax_category_remove(request):
+    category_id = int(request.GET.get('category_id', None))
+
+    TA._removeCategory(category_id, request.user.id)
+    data = {
+        'result': ("Category %d has been removed" % (category_id)),
+    }
+
+    return JsonResponse(data)
+
+
+
 def task_postpone(request, task_id, delay_shift):
     TA._postponeTask(task_id, delay_shift)
     return HttpResponse("Task %d postponed for %d days, <a href='javascript:history.go(-1)'>Go back</a>" % (task_id, delay_shift))
