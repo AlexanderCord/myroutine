@@ -1,3 +1,14 @@
 .nounderline {
   text-decoration: none !important
 }
+
+
+/* Calendar on task page */ 
+#highlight, .highlight {
+    /*background-color: #000000;*/
+    }
+.highlight > a.ui-state-default {
+    background-color: green;
+    /*border: 1px solid black;*/
+    color: white;
+}

@@ -513,6 +513,18 @@ def ajax_task_history(request):
     return HttpResponse(template.render(context, request))
 
 
+def ajax_task_dates_done(request):
+
+    task_id = int(request.GET.get('task_id', None))
+        
+    log_row =  list(Changelog.objects.filter(task_id = task_id, action=TASK_LOG_DONE).order_by('-log_date').values_list('log_date', flat = True))
+    log_row = list( map( lambda x: x.strftime('%m/%d/%Y'), log_row ) )
+    data = {
+        'result' : log_row
+    }
+    return JsonResponse(data)
+
+
 
 def ajax_category_remove(request):
     category_id = int(request.GET.get('category_id', None))
