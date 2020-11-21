@@ -2,13 +2,15 @@ $(document).ready(function() {
 
     $(function() {
         $('.datepicker').datepicker({
-            dateFormat: 'yy-mm-dd'
+            dateFormat: 'yy-mm-dd',
+            firstDay: 1,
         });
         getDates();
     });
 
     function fillDates(dates) {
         $('.datepicker').datepicker('destroy').datepicker({
+            firstDay: 1,
             beforeShowDay: function(date) {
                 var highlight = dates[date];
                 if (highlight) {
