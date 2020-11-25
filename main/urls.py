@@ -52,6 +52,7 @@ urlpatterns = [
 
     path('category/remove/<int:category_id>', views.category_remove, name = 'category_remove'),
     
+    path('notifications', views.notifications, name = 'notifications'), 
 
     path('', include('social_django.urls', namespace='social')),
     

@@ -41,6 +41,15 @@ class Task(models.Model):
         return str(self.user_id) + "-" + self.task 
 
 
+class Notification(models.Model):
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL,  null = True)
+    email = models.BooleanField('By email', default = False)
+
+    def __str__(self):
+        return str(self.user_id) + "-" + str(self.email)
+    
+
+
 class Schedule(models.Model):
         
     task_id = models.OneToOneField('Task', on_delete=models.CASCADE)

@@ -19,3 +19,6 @@ class NewTaskForm(forms.Form):
 class NewCategoryForm(forms.Form):
     name = forms.CharField(label='Category name', max_length=250)
         
+
+class NotificationForm(forms.Form):
+    email = forms.BooleanField(label='By email daily', required = False)

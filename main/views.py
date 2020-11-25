@@ -367,6 +367,9 @@ def category_add(request):
     return HttpResponse(template.render(context, request))
 
 
+
+
+
 """
 CATEGORY EDIT PAGE
 """
@@ -423,6 +426,73 @@ def category_edit(request, category_id):
     return HttpResponse(template.render(context, request))
 
 
+"""
+NOTIFICATION SETTINGS PAGE
+"""
+from .forms import NotificationForm
+def notifications(request):
+    template = loader.get_template('main/notifications.html')
+
+    result = ""
+    
+    try:
+        settings_row = Notification.objects.get(user_id = request.user.id)
+    except Notification.DoesNotExist:
+        settings_row = []
+        
+    
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = NotificationForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # redirect to a new URL:
+            
+            result = "Settings has been saved" 
+            # @todo move to action file + use correct fields from model
+            
+            try:
+
+                print("saving settings".encode('utf-8'))
+                
+                if settings_row:
+                    qs = Notification.objects.filter(user_id=request.user.id).update(
+                        email = form.cleaned_data['email']
+                    )
+                else:
+                    qs = Notification.objects.create(
+                        user_id =  User.objects.get(pk=request.user.id), 
+                        email = form.cleaned_data['email']
+                    )
+                    qs.save()
+
+                
+
+
+            except Error as e:
+                print(str(e))
+            
+                result = "Error during save"
+                
+                raise Http404("Error during save")
+            
+            print(str(qs).encode("utf-8"))
+            
+            
+#            form = ""                                                                    
+    else:
+        
+        form = NotificationForm(initial = {'email' : settings_row.email if settings_row else False})
+
+    
+    context = {
+        'form': form,
+        'result' : result,
+        'settings' : settings_row
+        
+    }
+    return HttpResponse(template.render(context, request))
 
 ##################################
 # AJAX METHODS AND HELPERS 
