@@ -7,6 +7,8 @@
 
 <div id="message">{{ result }}</div>
 
+<a href="/category/add">Add new category</a>
+<br>
 <form  method="post">
     {% csrf_token %}
     <table>
@@ -18,7 +20,7 @@
 </form>
 
 <br>
-<a href="/">To the main page</a>
+<a href="/">To the main page</a> 
 
 {% endblock %}
 
