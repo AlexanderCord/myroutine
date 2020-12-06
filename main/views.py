@@ -47,10 +47,10 @@ def index(request):
     
         filter_category_id = int(request.GET.get('category_id', -1))
         if filter_category_id == -1:
-            task_list = Task.objects.filter(active=True, user_id = request.user.id).order_by('-id')
+            task_list = Task.objects.filter(active=True, user_id = request.user.id).order_by('schedule__next_date')
         else:
             #filter by category
-            task_list = Task.objects.select_related("category_id").filter(active=True, category_id = Category.objects.get(pk=filter_category_id),user_id = request.user.id).order_by('-id')
+            task_list = Task.objects.select_related("category_id").filter(active=True, category_id = Category.objects.get(pk=filter_category_id),user_id = request.user.id).order_by('schedule__next_date') 
         
         category_list = Task.objects.select_related("category_id__name").values("category_id","category_id__name").filter(active=True, user_id = request.user.id).order_by("-task_count").annotate(task_count = Count("id"))
         #print(category_list)
