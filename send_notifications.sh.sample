@@ -1,0 +1,2 @@
+#/usr/bin/sh
+scl enable rh-python36 "/PATH/TO/manage.py send_notifications >>/PATH/TO/LOGS/notificationss.log 2>&1"

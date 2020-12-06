@@ -83,3 +83,4 @@ start.sh
 stop.sh
 restart.sh
 server
+send_notifications.sh

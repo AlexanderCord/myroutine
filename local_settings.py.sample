@@ -21,6 +21,13 @@ ALLOWED_HOSTS = [
     ''
 ]
 
+# URL used in notifications, with http://
+NOTIFICATION_APP_URL = ''
+
+# Sender's email in notifications
+NOTIFICATION_EMAIL_FROM = ''
+
+
 BASIC_AUTH_USERNAME = ''
 BASIC_AUTH_PASSWORD = ''
 
