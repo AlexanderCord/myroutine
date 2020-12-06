@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from main.models import *
 from django.utils import timezone
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.contrib.auth.models import User
 import codecs
 import sys
@@ -42,13 +42,27 @@ class Command(BaseCommand):
                 msg += "View more: " + NOTIFICATION_APP_URL
                 
                 #self.stdout.write(str)
+                """
                 result = send_mail(
                     'Review your tasks for today',
                     msg,
                     NOTIFICATION_EMAIL_FROM,
                     [user_email],
                     fail_silently=False,
+                    reply_to=[NOTIFICATION_EMAIL_FROM]
                 )
+                """
+                email = EmailMessage(
+                    'Review your tasks for today',
+                    msg,
+                    NOTIFICATION_EMAIL_FROM,
+                    [user_email],
+                    reply_to=[NOTIFICATION_EMAIL_FROM]
+                )
+                
+                result = email.send(fail_silently=False)
+                
+                
                 if result:
                     self.stdout.write(self.style.SUCCESS("Notification has been sent to %s"%user_email))
                 else: 
