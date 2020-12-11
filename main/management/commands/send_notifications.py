@@ -27,7 +27,7 @@ class Command(BaseCommand):
             self.stdout.write("Current user #"+str(user.user_id.id)+": " +str(user_email))
 
                     
-            tasks = Task.objects.select_related('category_id').select_related('schedule__task_id').filter(schedule__next_date = date.today(), user_id = user.user_id.id ).all().order_by('-id')
+            tasks = Task.objects.select_related('category_id').select_related('schedule__task_id').filter(schedule__next_date = date.today(), user_id = user.user_id.id , active = True).all().order_by('-id')
 
             if len(tasks) > 0:
 
@@ -38,8 +38,21 @@ class Command(BaseCommand):
                 for task in tasks:
                     self.stdout.write("Adding task id#" + str(task.id)+ ", user_id = "+str(task.user_id.id))
                     msg += "- [%s] %s" % (task.category_id.name, task.task) + "\n"
+
+
+                past_tasks = Task.objects.select_related('category_id').select_related('schedule__task_id').filter(schedule__next_date__lt = date.today(), user_id = user.user_id.id, active = True ).all().order_by('-id')
+                if len(past_tasks) > 0:
+                    msg += "\n And some tasks from earlier days you may want to consider:\n"
+                    
+                    for past_task in past_tasks:
+                        self.stdout.write("Adding past task id#" + str(past_task.id)+ ", user_id = "+str(past_task.user_id.id))
+                        msg += "- [%s] %s" % (past_task.category_id.name, past_task.task) + "\n"
+                        
+                    msg += "\n"    
+                    
+
             
-                msg += "View more: " + NOTIFICATION_APP_URL
+                msg += "\nView more: " + NOTIFICATION_APP_URL
                 
                 #self.stdout.write(str)
                 """
