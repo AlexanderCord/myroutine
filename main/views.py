@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 from .static import *
 
 import main.actions.task_actions as TA
-from django.db.models import Count
+from django.db.models import (Count, Case, When, Value, CharField, Q)
 
 """
 Google OAuth logout
@@ -43,14 +43,33 @@ def index(request):
     filter_category_id = -1
     
     if request.user.is_authenticated:
-    
-    
+        
+        filter_args = {
+            'active' :True, 
+            'user_id' : request.user.id
+        }
         filter_category_id = int(request.GET.get('category_id', -1))
-        if filter_category_id == -1:
-            task_list = Task.objects.filter(active=True, user_id = request.user.id).order_by('schedule__next_date')
-        else:
-            #filter by category
-            task_list = Task.objects.select_related("category_id").filter(active=True, category_id = Category.objects.get(pk=filter_category_id),user_id = request.user.id).order_by('schedule__next_date') 
+
+        if filter_category_id != -1:
+            filter_args['category_id'] = Category.objects.get(pk=filter_category_id)
+
+
+        date_blocks = {
+            'past' : 'Past',
+            'today' : 'Today',
+            'next7' : 'Next 7 days',
+            'next30' : 'Next 30 days',
+            'other' : 'Other'
+        }
+            
+        task_list = Task.objects.annotate(week_day=Case(
+            When(schedule__next_date = date.today(), then=Value(date_blocks['today'])),
+            When(Q(schedule__next_date__gt = date.today()) & Q(schedule__next_date__lt = date.today() + timedelta(days=7)) , then=Value(date_blocks['next7'])),
+            When(Q(schedule__next_date__gt = date.today()) & Q(schedule__next_date__lt = date.today() + timedelta(days=30)) , then=Value(date_blocks['next30'])),
+            When(schedule__next_date__lt = date.today(), then=Value(date_blocks['past'])),
+            default=Value(date_blocks['other']),
+            output_field=CharField(),
+        )).filter(**filter_args).order_by('schedule__next_date')
         
         category_list = Task.objects.select_related("category_id__name").values("category_id","category_id__name").filter(active=True, user_id = request.user.id).order_by("-task_count").annotate(task_count = Count("id"))
         #print(category_list)
@@ -62,6 +81,7 @@ def index(request):
         'task_list': task_list,
         'category_list' : category_list,
         'filter_category_id' : filter_category_id,
+        'date_blocks' : date_blocks
     }
     return HttpResponse(template.render(context, request))
 
