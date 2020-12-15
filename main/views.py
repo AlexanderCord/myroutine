@@ -57,6 +57,7 @@ def index(request):
         date_blocks = {
             'past' : 'Past',
             'today' : 'Today',
+            'tomorrow' : 'Tomorrow',
             'next7' : 'Next 7 days',
             'next30' : 'Next 30 days',
             'other' : 'Other'
@@ -64,8 +65,9 @@ def index(request):
             
         task_list = Task.objects.annotate(week_day=Case(
             When(schedule__next_date = date.today(), then=Value(date_blocks['today'])),
-            When(Q(schedule__next_date__gt = date.today()) & Q(schedule__next_date__lt = date.today() + timedelta(days=7)) , then=Value(date_blocks['next7'])),
-            When(Q(schedule__next_date__gt = date.today()) & Q(schedule__next_date__lt = date.today() + timedelta(days=30)) , then=Value(date_blocks['next30'])),
+            When(schedule__next_date = date.today() + timedelta(days=1) , then=Value(date_blocks['tomorrow'])),
+            When(Q(schedule__next_date__gt = date.today() + timedelta(days=1)) & Q(schedule__next_date__lte = date.today() + timedelta(days=7)) , then=Value(date_blocks['next7'])),
+            When(Q(schedule__next_date__gt = date.today()) & Q(schedule__next_date__lte = date.today() + timedelta(days=30)) , then=Value(date_blocks['next30'])),
             When(schedule__next_date__lt = date.today(), then=Value(date_blocks['past'])),
             default=Value(date_blocks['other']),
             output_field=CharField(),
