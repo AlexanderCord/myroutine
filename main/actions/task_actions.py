@@ -29,7 +29,12 @@ def _postponeTask(task_id, delay_shift):
         
         try:
             qs = Schedule.objects.get(task_id=task_id)
-            qs.next_date = date.today() + timedelta(days=delay_shift) 
+            if qs.next_date < date.today():
+            
+                qs.next_date = date.today() + timedelta(days=delay_shift) 
+            else :
+                qs.next_date = qs.next_date + timedelta(days=delay_shift) 
+            
             next_date_val = str(qs.next_date)
             
             qs.save()
@@ -98,7 +103,12 @@ def _completeTask(task_id):
             print("Delay shift from db %d" % delay_shift)
             
             qs = Schedule.objects.get(task_id=task_id)
-            qs.next_date = date.today() + timedelta(days=delay_shift) 
+            if qs.next_date < date.today():
+            
+                qs.next_date = date.today() + timedelta(days=delay_shift) 
+            else:
+                qs.next_date = qs.next_date + timedelta(days=delay_shift) 
+            
             next_date_val = str(qs.next_date)
             qs.save()
             task = Task.objects.get(pk = task_id)
