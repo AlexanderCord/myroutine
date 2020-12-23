@@ -77,6 +77,7 @@ def index(request):
         #print(category_list)
     else:
         task_list = []
+        date_blocks = {}
         category_list = []
     template = loader.get_template('main/index.html')
     context = {
