@@ -23,10 +23,14 @@
 {% endblock %}
 
 {% block javascript %}
-
- <script type="text/javascript">
- $(document).ready(function() {
-    // $('#id_start_date').datepicker();
- });    
- </script>
+<script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
+<link href="https://code.jquery.com/ui/1.11.4/themes/black-tie/jquery-ui.css" charset="utf-8" type="text/css" rel="stylesheet">
+    
+<script type="text/javascript">
+$(document).ready(function() {
+   $('.datepicker').datepicker({
+     dateFormat: 'yy-mm-dd',
+   });
+});    
+</script>
 {% endblock %}

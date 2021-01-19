@@ -118,7 +118,7 @@ def task(request, task_id):
         'task_id': task_id,
         'task' : task_row,
         'log': log_row,
-        'action_enum': {TASK_LOG_START : 'started', TASK_LOG_POSTPONE : 'postponed' , TASK_LOG_DONE : 'marked as done' }
+        'action_enum': TASK_LOG_ENUM
     }
     return HttpResponse(template.render(context, request))
 
@@ -128,7 +128,7 @@ def task(request, task_id):
 """
 ADD NEW TASK PAGE 
 """
-from .forms import NewTaskForm
+from .forms import NewTaskForm, EditTaskForm
 
 from datetime import date
 
@@ -204,7 +204,7 @@ def task_edit(request,task_id):
     
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = NewTaskForm(request.POST, user=request.user)
+        form = EditTaskForm(request.POST, user=request.user)
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
@@ -223,6 +223,8 @@ def task_edit(request,task_id):
                     period = form.cleaned_data['period'] #Period.objects.get(pk = form.cleaned_data['period']) 
                           
                 )
+                
+                TA._setNextDate(task_id, form.cleaned_data['next_date'])
 
 
             except Error as e:
@@ -238,7 +240,7 @@ def task_edit(request,task_id):
             form = ""                                                                    
     else:
         
-        form = NewTaskForm(user=request.user, initial = {'task' : task_row.task, 'category' : task_row.category_id, 'period' : task_row.period   })
+        form = EditTaskForm(user=request.user, initial = {'task' : task_row.task, 'category' : task_row.category_id, 'period' : task_row.period  , 'next_date' : task_row.schedule.next_date })
 
     
     context = {
@@ -301,7 +303,7 @@ def archive_detail(request, task_id):
         'task_id': task_id,
         'task' : task_row,
         'log': log_row,
-        'action_enum': {TASK_LOG_START : 'started', TASK_LOG_POSTPONE : 'postponed' , TASK_LOG_DONE : 'marked as done' , TASK_LOG_ARCHIVE : 'archived'}
+        'action_enum': TASK_LOG_ENUM
     }
     return HttpResponse(template.render(context, request))
 
@@ -601,7 +603,7 @@ def ajax_task_history(request):
         'task_id': task_id,
         'task' : task_row,
         'log': log_row,
-        'action_enum': {TASK_LOG_START : 'started', TASK_LOG_POSTPONE : 'postponed' , TASK_LOG_DONE : 'marked as done' , TASK_LOG_ARCHIVE : 'archived'}
+        'action_enum': TASK_LOG_ENUM
     }
     return HttpResponse(template.render(context, request))
 

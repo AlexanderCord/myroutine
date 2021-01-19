@@ -3,7 +3,8 @@ from django import forms
 
 from .models import Category, Period
 from django.db.models import Q
-
+from functools import partial
+DateInput = partial(forms.DateInput, {'class': 'datepicker', 'autocomplete' : 'off'})
 
 class NewTaskForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -13,8 +14,10 @@ class NewTaskForm(forms.Form):
     task = forms.CharField(label='Task', max_length=250)
     category  = forms.ModelChoiceField(queryset=Category.objects.all())
     period = forms.ModelChoiceField(queryset=Period.objects.all().order_by('name'))
-    
 
+
+class EditTaskForm(NewTaskForm):    
+    next_date = forms.DateField(widget=DateInput())
 
 class NewCategoryForm(forms.Form):
     name = forms.CharField(label='Category name', max_length=250)

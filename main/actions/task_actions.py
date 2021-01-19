@@ -148,6 +148,7 @@ def _startTask(task_id, start_date):
         
         try:
             task = Task.objects.get(pk = task_id)
+
             
             qs = Schedule.objects.create(task_id = task, next_date = start_date)
             
@@ -168,6 +169,46 @@ def _startTask(task_id, start_date):
 
 
     return start_date
+    
+    
+def _setNextDate(task_id, next_date):
+
+    next_date_val = ""
+    if next_date is None:
+        print("next_date is not set")      
+        raise Http404("next_date is not set ")
+
+    else:
+        print("next_date is ok, %s" % next_date)        
+        
+    if task_id is not None:
+        
+        try:
+            task = Task.objects.get(pk = task_id)
+            
+            qs = Schedule.objects.get(task_id=task_id)
+            qs.next_date = next_date
+            next_date_val = str(qs.next_date)
+            qs.save()
+            
+            
+            qs2 = Changelog.objects.create(task_id = task, action = TASK_LOG_CHANGED)
+            qs2.save()
+        except DatabaseError as e:
+            print(str(e).encode("utf-8"))
+            
+            raise Http404("Error during save")
+            
+        print(str(qs).encode("utf-8"))
+
+    else:
+        raise Http404("Task_id parameter should be set")
+
+
+    return next_date_val
+    
+    
+    
 
 
 
