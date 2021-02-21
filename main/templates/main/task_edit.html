@@ -25,26 +25,9 @@
 {% block javascript %}
 <script src="http://code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
 <link href="https://code.jquery.com/ui/1.11.4/themes/black-tie/jquery-ui.css" charset="utf-8" type="text/css" rel="stylesheet">
-    
-<script type="text/javascript">
-$(document).ready(function() {
-   $('.datepicker').datepicker({
-     dateFormat: 'yy-mm-dd',
-     firstDay: 1,
-   });
-   
-   $('#id_period').on('change', function() {
-     // custom period
-     if(this.value == 2) {
-        $('#id_period_data').parent().parent().show();
-     } else {
-        $('#id_period_data').parent().parent().hide();
-     
-     }
-   });
-   
-   $('#id_period').trigger('change');
-
-});    
+<script>
+var startDatepicker = true;
 </script>
+<script src="{{STATIC_URL}}/static/task_edit_page.js"></script>
+    
 {% endblock %}

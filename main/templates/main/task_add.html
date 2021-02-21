@@ -25,19 +25,8 @@
 {% endblock %}
 
 {% block javascript %}
-
- <script type="text/javascript">
- $(document).ready(function() {
-   $('#id_period').on('change', function() {
-     // custom period
-     if(this.value == 2) {
-        $('#id_period_data').parent().parent().show();
-     } else {
-        $('#id_period_data').parent().parent().hide();
-     
-     }
-   });
-   $('#id_period').trigger('change');
- });    
- </script>
+<script>
+var startDatepicker = false;
+</script>
+<script src="{{STATIC_URL}}/static/task_edit_page.js"></script>
 {% endblock %}

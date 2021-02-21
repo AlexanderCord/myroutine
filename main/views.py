@@ -182,7 +182,7 @@ def task_add(request):
         
         
         form = NewTaskForm(user=request.user, initial = {
-            'period_data' : 0
+            'period_data' : 1
         })
 
     
