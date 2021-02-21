@@ -25,7 +25,7 @@ $(document).ready(function() {
    });
    $('#id_period').trigger('change');
    // @todo mobile-responsive custom style
-   if($(window).width < 100) {
+   if($(window).width() <= 800) {
        $('#id_task').attr('style', 'width: 200px')
 
    } else {
