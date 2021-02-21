@@ -101,6 +101,10 @@ def _completeTask(task_id):
             task_original = Task.objects.select_related('period').get(pk = task_id)
             delay_shift = task_original.period.days
             print("Delay shift from db %d" % delay_shift)
+            if delay_shift == 0:
+                delay_shift = task_original.period_data
+            print("Custom delay shift from db %d" % delay_shift)
+
             
             qs = Schedule.objects.get(task_id=task_id)
             if qs.next_date < date.today():

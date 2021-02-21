@@ -9,6 +9,11 @@
 
 <ul>
 <li>Period: {{task.period}}</li>
+{% if task.period_data > 0 %} 
+<li>Custom period: every {{task.period_data}} days</li>
+{% endif %}
+
+
 <li>Start date: {{task.start_date}}</li>
 {% if task.schedule.next_date %}
 <li>Next scheduled date: <span id="next_date_val">{{task.schedule.next_date}}</span></li>
