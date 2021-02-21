@@ -10,6 +10,7 @@
 <form  method="post">
     {% csrf_token %}
     <table>
+    <!-- @todo mobile custom responsive style --> 
     {{ form }}
     </table>
     {% if form  %}
@@ -29,5 +30,5 @@
 var startDatepicker = true;
 </script>
 <script src="{{STATIC_URL}}/static/task_edit_page.js"></script>
-    
+      
 {% endblock %}

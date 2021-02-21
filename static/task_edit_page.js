@@ -24,4 +24,11 @@ $(document).ready(function() {
      }
    });
    $('#id_period').trigger('change');
+   // @todo mobile-responsive custom style
+   if($(window).width < 100) {
+       $('#id_task').attr('style', 'width: 200px')
+
+   } else {
+       $('#id_task').attr('style', 'width: 400px')
+   }
  });    
