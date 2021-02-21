@@ -245,12 +245,17 @@ def task_edit(request,task_id):
             form = ""                                                                    
     else:
         
+        try:
+            task_next_date = task_row.schedule.next_date 
+        except Schedule.DoesNotExist:
+            task_next_date = ""
+        
         form = EditTaskForm(user=request.user, initial = {
             'task' : task_row.task,
             'category' : task_row.category_id,
             'period' : task_row.period  ,
             'period_data' : task_row.period_data  ,
-            'next_date' : task_row.schedule.next_date 
+            'next_date' : task_next_date
         })
 
     
@@ -546,6 +551,7 @@ def task_start(request, task_id):
 
 def task_done(request, task_id):
 
+
     TA._completeTask(task_id)
     return HttpResponse("Task %d marked as done, <a href='javascript:history.go(-1)'>Go back</a>" % task_id)
 
@@ -571,25 +577,34 @@ def ajax_task_start(request):
 
 def ajax_task_done(request):
     task_id = int(request.GET.get('task_id', None))
-    next_date_val = TA._completeTask(task_id)
+    try:
+        next_date_val = TA._completeTask(task_id)
 
-    data = {
-        'result': ("Task %d marked as done" % task_id),
-        'next_date_val': datetime.strptime(next_date_val, '%Y-%m-%d').strftime('%b %d, %Y')  
-    }
+        data = {
+            'result': ("Task %d marked as done" % task_id),
+            'next_date_val': datetime.strptime(next_date_val, '%Y-%m-%d').strftime('%b %d, %Y')  
+        }
+        return JsonResponse(data)
 
-    return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'error': str(e)})
+
+
 
 def ajax_task_postpone(request):
-    task_id = int(request.GET.get('task_id', None))
-    delay_shift = int(request.GET.get('delay_shift', None))
-    next_date_val = TA._postponeTask(task_id, delay_shift)
-    data = {
-        'result': ("Task %d postponed for %d days" % (task_id, delay_shift)),
-        'next_date_val': datetime.strptime(next_date_val, '%Y-%m-%d').strftime('%b %d, %Y')  
-    }
+    try:
 
-    return JsonResponse(data)
+        task_id = int(request.GET.get('task_id', None))
+        delay_shift = int(request.GET.get('delay_shift', None))
+        next_date_val = TA._postponeTask(task_id, delay_shift)
+        data = {
+            'result': ("Task %d postponed for %d days" % (task_id, delay_shift)),
+            'next_date_val': datetime.strptime(next_date_val, '%Y-%m-%d').strftime('%b %d, %Y')  
+        }
+
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'error': str(e)})
 
 
 def ajax_task_archive(request):

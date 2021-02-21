@@ -41,8 +41,8 @@ $(document).ready(function() {
                     }
                     fillDates(dates);
                 } else {
-                    console.log("Error has occured during request");
-                    message_box.text('Error has occured during request');
+                    console.log("Error has occured during request" + (data.error?": " + data.error:""));
+                    message_box.text('Error has occured during request' + (data.error?": " + data.error:""));
                 }
             },
             error: function(data) {
@@ -102,8 +102,8 @@ $(document).ready(function() {
 
 
                 } else {
-                    console.log("Error has occured during request");
-                    message_box.text('Error has occured during request');
+                    console.log("Error has occured during request" + (data.error?": " + data.error:""));
+                    message_box.text('Error has occured during request' + (data.error?": " + data.error:""));
                 }
                 message_box.fadeIn('slow', function() {
                     message_box.delay(5000).fadeOut();
@@ -135,8 +135,8 @@ $(document).ready(function() {
 
 
                 } else {
-                    console.log("Error has occured during request");
-                    message_box.text('Error has occured during request');
+                    console.log("Error has occured during request" + (data.error?": " + data.error:""));
+                    message_box.text('Error has occured during request' + (data.error?": " + data.error:""));
                 }
                 message_box.fadeIn('slow', function() {
                     message_box.delay(5000).fadeOut();
@@ -169,8 +169,8 @@ $(document).ready(function() {
                     $('#next_date_val').text(data.next_date_val);
 
                 } else {
-                    console.log("Error has occured during request");
-                    message_box.text('Error has occured during request');
+                    console.log("Error has occured during request" + (data.error?": " + data.error:""));
+                    message_box.text('Error has occured during request' + (data.error?": " + data.error:""));
                 }
                 message_box.fadeIn('slow', function() {
                     message_box.delay(5000).fadeOut();
@@ -202,8 +202,8 @@ $(document).ready(function() {
                     message_box.text(data.result);
 
                 } else {
-                    console.log("Error has occured during request");
-                    message_box.text('Error has occured during request');
+                    console.log("Error has occured during request" + (data.error?": " + data.error:""));
+                    message_box.text('Error has occured during request' + (data.error?": " + data.error:""));
                 }
                 message_box.fadeIn('slow', function() {
                     message_box.delay(5000).fadeOut();

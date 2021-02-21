@@ -28,7 +28,16 @@
 
  <script type="text/javascript">
  $(document).ready(function() {
-    // $('#id_start_date').datepicker();
+   $('#id_period').on('change', function() {
+     // custom period
+     if(this.value == 2) {
+        $('#id_period_data').parent().parent().show();
+     } else {
+        $('#id_period_data').parent().parent().hide();
+     
+     }
+   });
+   $('#id_period').trigger('change');
  });    
  </script>
 {% endblock %}

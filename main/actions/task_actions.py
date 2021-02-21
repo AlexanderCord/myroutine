@@ -15,11 +15,11 @@ def _postponeTask(task_id, delay_shift):
         
     if delay_shift is None:
         print("delay shift is not set")      
-        raise Http404("delay shift is not set or not equal to [1,7,30]")
+        raise Exception("delay shift is not set or not equal to [1,7,30]")
 
     elif  delay_shift not in [1,7,30]:
         print("delay shift is not ok, %d" % delay_shift)      
-        raise Http404("delay shift is not set or not equal to [1,7,30]")
+        raise Exception("delay shift is not set or not equal to [1,7,30]")
             
     else:
         print("delay_shift is ok, %d" % delay_shift)        
@@ -45,18 +45,18 @@ def _postponeTask(task_id, delay_shift):
             qs2.save()
 
         except Schedule.DoesNotExist:
-            raise Http404("Next task date does not exist")
+            raise Exception("Next task date does not exist")
 
         except DatabaseError as e:
             print(str(e))
             
-            raise Http404("Error during save")
+            raise Exception("Error during save")
             
         print(str(qs).encode("utf-8"))
         print(str(qs2).encode("utf-8"))
 
     else:
-        raise Http404("Task_id parameter should be set")
+        raise Exception("Task_id parameter should be set")
 
     return next_date_val
 
@@ -122,18 +122,18 @@ def _completeTask(task_id):
             qs2.save()
 
         except Schedule.DoesNotExist:
-            raise Http404("Next task date does not exist")
+            raise Exception("Next task date does not exist")
 
         except DatabaseError as e:
             print(str(e))
             
-            raise Http404("Error during save")
+            raise Exception("Error during save")
             
         print(str(qs).encode("utf-8"))
         print(str(qs2).encode("utf-8"))
 
     else:
-        raise Http404("Task_id parameter should be set")
+        raise Exception("Task_id parameter should be set")
 
     return next_date_val
 

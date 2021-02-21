@@ -23,6 +23,7 @@
 {% endif %}
 </ul>
 
+
 <p><a class="btn btn-primary" href="{% url 'task_done' task_id %}" id="link_task_done" task-id="{{task_id}}">Mark as done</a></p>
 
 
@@ -49,10 +50,11 @@
 Dates when you've completed the task<br>
 <div class="datepicker"></div>
 <br>
+
+
 <p>
 <a class="btn btn-info" href="{% url 'task_edit' task_id %}"">Edit task</a>
 <a class="btn btn-info" href="{% url 'task_archive' task_id %}"  id="link_task_archive" task-id="{{task_id}}">Archive task</a>
-</p>
 <br>
 <p>
 <a href="/">To the main page</a>

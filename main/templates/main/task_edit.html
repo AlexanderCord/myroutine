@@ -32,6 +32,19 @@ $(document).ready(function() {
      dateFormat: 'yy-mm-dd',
      firstDay: 1,
    });
+   
+   $('#id_period').on('change', function() {
+     // custom period
+     if(this.value == 2) {
+        $('#id_period_data').parent().parent().show();
+     } else {
+        $('#id_period_data').parent().parent().hide();
+     
+     }
+   });
+   
+   $('#id_period').trigger('change');
+
 });    
 </script>
 {% endblock %}
