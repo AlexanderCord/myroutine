@@ -9,7 +9,7 @@
 
 <ul>
 <li>Period: {{task.period}}</li>
-{% if task.period_data > 0 %} 
+{% if task.period.days == 0 %}  
 <li>Custom period: every {{task.period_data}} days</li>
 {% endif %}
 

@@ -160,7 +160,8 @@ def task_add(request):
                     category_id = form.cleaned_data['category'], #Category.objects.get(pk = form.cleaned_data['category']), 
                     task = form.cleaned_data['task'],
                     start_date = date.today(), 
-                    period = form.cleaned_data['period'] #Period.objects.get(pk = form.cleaned_data['period']) 
+                    period = form.cleaned_data['period'],
+                    period_data = form.cleaned_data['period_data']
                           
                 )
                 qs.save()
@@ -179,7 +180,10 @@ def task_add(request):
             form = ""                                                                    
     else:
         
-        form = NewTaskForm(user=request.user)
+        
+        form = NewTaskForm(user=request.user, initial = {
+            'period_data' : 0
+        })
 
     
     context = {
@@ -220,7 +224,8 @@ def task_edit(request,task_id):
                 qs = Task.objects.filter(pk = task_id).update(
                     category_id = form.cleaned_data['category'], #Category.objects.get(pk = form.cleaned_data['category']), 
                     task = form.cleaned_data['task'],
-                    period = form.cleaned_data['period'] #Period.objects.get(pk = form.cleaned_data['period']) 
+                    period = form.cleaned_data['period'],
+                    period_data = form.cleaned_data['period_data']
                           
                 )
                 
@@ -240,7 +245,13 @@ def task_edit(request,task_id):
             form = ""                                                                    
     else:
         
-        form = EditTaskForm(user=request.user, initial = {'task' : task_row.task, 'category' : task_row.category_id, 'period' : task_row.period  , 'next_date' : task_row.schedule.next_date })
+        form = EditTaskForm(user=request.user, initial = {
+            'task' : task_row.task,
+            'category' : task_row.category_id,
+            'period' : task_row.period  ,
+            'period_data' : task_row.period_data  ,
+            'next_date' : task_row.schedule.next_date 
+        })
 
     
     context = {

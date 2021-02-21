@@ -14,6 +14,7 @@ class NewTaskForm(forms.Form):
     task = forms.CharField(label='Task', max_length=250)
     category  = forms.ModelChoiceField(queryset=Category.objects.all())
     period = forms.ModelChoiceField(queryset=Period.objects.all().order_by('name'))
+    period_data = forms.IntegerField(label = 'Custom period shift (days)', min_value = 0)
 
 
 class EditTaskForm(NewTaskForm):    
