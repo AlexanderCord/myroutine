@@ -574,6 +574,26 @@ def ajax_task_start(request):
 
     return JsonResponse(data)
 
+def ajax_task_assign(request):
+    try:
+
+        task_id = int(request.GET.get('task_id', None))
+        delay_shift = int(request.GET.get('delay_shift', None))
+        next_date_val = TA._setNextDate(task_id, TA._getNextDate(delay_shift))
+        data = {
+            'result': ("Task %d assign for date %s" % (task_id, next_date_val)),
+            'next_date_val': datetime.strptime(next_date_val, '%Y-%m-%d').strftime('%b %d, %Y')  
+        }
+
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'error': str(e)})
+
+
+
+
+
+
 
 def ajax_task_done(request):
     task_id = int(request.GET.get('task_id', None))
@@ -662,6 +682,24 @@ def ajax_category_remove(request):
 def task_postpone(request, task_id, delay_shift):
     TA._postponeTask(task_id, delay_shift)
     return HttpResponse("Task %d postponed for %d days, <a href='javascript:history.go(-1)'>Go back</a>" % (task_id, delay_shift))
+
+def task_assign(request, task_id, delay_shift):
+    try:
+
+        task_id = int(task_id)
+        delay_shift = int(delay_shift)
+        next_date_val = TA._setNextDate(task_id, TA._getNextDate(delay_shift))
+        data = {
+            'result': ("Task %d assign for date %s" % (task_id, next_date_val)),
+            'next_date_val': datetime.strptime(next_date_val, '%Y-%m-%d').strftime('%b %d, %Y')  
+        }
+
+        return JsonResponse(data)
+    except Exception as e:
+        return JsonResponse({'error': str(e)})
+
+
+
 
 
 def task_archive(request, task_id):

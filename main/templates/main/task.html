@@ -32,6 +32,14 @@
 <a class="btn btn-light link_task_postpone" href="{% url 'task_postpone' task_id 30 %}"  delay-shift="30" task-id="{{task_id}}">A month</a>
 </p>
 
+<p>Assign for: <a class="btn btn-light link_task_assign" href="{% url 'task_assign' task_id 0 %}" delay-shift="0" task-id="{{task_id}}">Today</a>
+<a class="btn btn-light link_task_assign" href="{% url 'task_assign' task_id 1 %}"  delay-shift="1"  task-id="{{task_id}}">Tomorrow</a>
+</p>
+
+
+
+
+
 
 <br>
 <h5>History:</h5>

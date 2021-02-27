@@ -181,6 +181,46 @@ $(document).ready(function() {
         });
         return false;
     });
+    
+    
+    
+    $(".link_task_assign").click(function() {
+        task_id = $(this).attr('task-id');
+        delay_shift = $(this).attr('delay-shift');
+        console.log(' assigning task_id ' + task_id + ' for ' + delay_shift + ' days ahead');
+        message_box = $('#message');
+        $.ajax({
+            url: '/ajax/task/assign',
+            data: {
+                'task_id': task_id,
+                'delay_shift': delay_shift
+            },
+            dataType: 'json',
+            success: function(data) {
+                if (data.result) {
+
+                    console.log("Result:" + data.result);
+                    message_box.text(data.result);
+                    $('#next_date_val').text(data.next_date_val);
+
+                } else {
+                    console.log("Error has occured during request" + (data.error?": " + data.error:""));
+                    message_box.text('Error has occured during request' + (data.error?": " + data.error:""));
+                }
+                message_box.fadeIn('slow', function() {
+                    message_box.delay(5000).fadeOut();
+                });
+                refreshHistory(task_id);
+
+            }
+        });
+        return false;
+    });
+    
+        
+    
+    
+    
 
     $("#link_task_archive").click(function() {
         if (!window.confirm('Do you really want to archive this task?')) {

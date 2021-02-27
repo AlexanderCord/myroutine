@@ -174,6 +174,14 @@ def _startTask(task_id, start_date):
 
     return start_date
     
+def _getNextDate(delay_shift):
+    if delay_shift == 0:
+        return date.today()
+    elif delay_shift == 1:
+        return date.today() + timedelta(days=delay_shift) 
+    else:
+        raise Http404("Error: wrong delay_shift")
+
     
 def _setNextDate(task_id, next_date):
 

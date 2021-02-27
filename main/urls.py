@@ -16,6 +16,8 @@ urlpatterns = [
     
     path('task/<int:task_id>/postpone/<int:delay_shift>', views.task_postpone, name = 'task_postpone'),
     
+    path('task/<int:task_id>/assign/<int:delay_shift>', views.task_assign, name = 'task_assign'),
+    
     path('task/<int:task_id>/archive/', views.task_archive, name = 'task_archive'),
 
     path('task/<int:task_id>/start', views.task_start, name = 'task_start'),
@@ -31,6 +33,8 @@ urlpatterns = [
     path('ajax/task/start', views.ajax_task_start, name = 'ajax_task_start'),
     
     path('ajax/task/postpone', views.ajax_task_postpone, name = 'ajax_task_postpone'),
+
+    path('ajax/task/assign', views.ajax_task_assign, name = 'ajax_task_assign'),
     
     path('ajax/task/history', views.ajax_task_history, name = 'ajax_task_history'),
     
