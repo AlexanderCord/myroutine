@@ -1,6 +1,6 @@
-# myroutine_backend
+# MyRoutine
 
-App that allows you to organize daily routine. You create a repititive task, specify it's category and period of repition.
+MyRoutine is an app that allows you to organize daily routine. You create a repititive task, specify it's category and period of repition.
 
 Features
 - Google authorization
