@@ -368,7 +368,7 @@ def ajax_task_stats(request):
             .values(_id = Cast('log_date', DateField()))
             .annotate(count = Count('id'))
             .filter(log_date__range=[filter_date_from, filter_date_to])
-            .order_by('-_id')
+            .order_by('_id')
         )    
         print(log_rows[log_type].query)
         log_rows[log_type] = list(log_rows[log_type].all())
