@@ -59,8 +59,9 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
-
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 SOCIAL_AUTH_GOOGLE_OAUTH2_AUTH_EXTRA_ARGUMENTS = {
     'access_type': 'offline',
-    'approval_prompt': 'force'
+    'approval_prompt': 'force',
+    'redirect_uri': 'https://INSERT_DOMAIN_HERE/complete/google-oauth2/',    
 }
