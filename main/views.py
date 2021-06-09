@@ -3,11 +3,14 @@ from django.shortcuts import HttpResponseRedirect
 
 from django.template import loader
 from .models import *
-from datetime import datetime  
-from datetime import timedelta
 from django.db import *
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
+from django.db.models.functions import Cast
+from django.db.models.fields import DateField
+from datetime import datetime, date
+from datetime import timedelta
+from django.contrib.auth.decorators import login_required
 
 
 from .static import *
@@ -18,6 +21,7 @@ from django.db.models import (Count, Case, When, Value, CharField, Q)
 """
 Google OAuth logout
 """
+@login_required
 def signout(request):
     logout(request)
     return HttpResponseRedirect('/')
@@ -94,7 +98,7 @@ def index(request):
 """
 TASK DETAILS PAGE
 """
-
+@login_required
 def task(request, task_id):
 
 
@@ -132,7 +136,7 @@ from .forms import NewTaskForm, EditTaskForm
 
 from datetime import date
 
-
+@login_required
 def task_add(request):
 
     # task_list = Task.objects.order_by('-id')[:5]
@@ -197,7 +201,7 @@ def task_add(request):
 """
 TASK EDIT PAGE
 """
-
+@login_required
 def task_edit(request,task_id):
 
     # task_list = Task.objects.order_by('-id')[:5]
@@ -276,7 +280,7 @@ def task_edit(request,task_id):
 """
 ARCHIVE PAGE
 """
-
+@login_required
 def archive(request):
     
     if request.user.is_authenticated:
@@ -295,7 +299,7 @@ def archive(request):
 """
 ARCHIVE DETAILS PAGE
 """
-
+@login_required
 def archive_detail(request, task_id):
 
 
@@ -328,7 +332,7 @@ def archive_detail(request, task_id):
 """
 TASK STATS PAGE
 """
-
+@login_required
 def stats(request):
     
     if request.user.is_authenticated:
@@ -344,16 +348,9 @@ def stats(request):
 """
 AJAX for tasks page
 """
+
+@login_required
 def ajax_task_stats(request):
-
-    from django.db.models.functions import Cast
-    from django.db.models.fields import DateField
-    from django.db.models import F
-    from datetime import datetime, date
-    from datetime import timedelta
-    from django.db.models.functions import TruncDate
-    
-
 
     filter_date_from = date.today() + timedelta(days=-30)
     filter_date_to = date.today() 
@@ -389,7 +386,7 @@ def ajax_task_stats(request):
 """
 CATEGORY LIST PAGE
 """
-
+@login_required
 def category(request):
     
     if request.user.is_authenticated:
@@ -406,6 +403,7 @@ def category(request):
 CATEGORY REMOVAL ACTION
 """
 from .forms import NewCategoryForm
+@login_required
 def category_remove(request, category_id):
     TA._removeCategory(category_id, request.user.id)
     return HttpResponse("Category %d has been removed, <a href='javascript:history.go(-1)'>Go back</a>" % category_id)
@@ -415,7 +413,7 @@ def category_remove(request, category_id):
 """
 CATEGORY ADD PAGE
 """
-
+@login_required
 def category_add(request):
     template = loader.get_template('main/category_add.html')
 
@@ -474,7 +472,7 @@ def category_add(request):
 """
 CATEGORY EDIT PAGE
 """
-
+@login_required
 def category_edit(request, category_id):
     template = loader.get_template('main/category_edit.html')
 
@@ -531,6 +529,7 @@ def category_edit(request, category_id):
 NOTIFICATION SETTINGS PAGE
 """
 from .forms import NotificationForm
+@login_required
 def notifications(request):
     template = loader.get_template('main/notifications.html')
 
@@ -601,14 +600,14 @@ def notifications(request):
 
 
 # @todo - insert check for authorization + user_id task ownership task into all actions / ajax methods/ API
-
+@login_required
 def task_start(request, task_id):
     start_date = request.POST.get('start_date', None)
     
     TA._startTask(task_id, start_date)
         
     return HttpResponse("Task %d now has start date %s, <a href='javascript:history.go(-1)'>Go back</a>" % (task_id, start_date))
-
+@login_required
 def task_done(request, task_id):
 
 
@@ -618,7 +617,7 @@ def task_done(request, task_id):
 """
 UI AJAX Methods 
 """
-
+@login_required
 def ajax_task_start(request):
     task_id = int(request.GET.get('task_id', None))
 
@@ -633,7 +632,7 @@ def ajax_task_start(request):
     }
 
     return JsonResponse(data)
-
+@login_required
 def ajax_task_assign(request):
     try:
 
@@ -654,7 +653,7 @@ def ajax_task_assign(request):
 
 
 
-
+@login_required
 def ajax_task_done(request):
     task_id = int(request.GET.get('task_id', None))
     try:
@@ -670,7 +669,7 @@ def ajax_task_done(request):
         return JsonResponse({'error': str(e)})
 
 
-
+@login_required
 def ajax_task_postpone(request):
     try:
 
@@ -686,7 +685,7 @@ def ajax_task_postpone(request):
     except Exception as e:
         return JsonResponse({'error': str(e)})
 
-
+@login_required
 def ajax_task_archive(request):
     task_id = int(request.GET.get('task_id', None))
     TA._archiveTask(task_id)
@@ -696,7 +695,7 @@ def ajax_task_archive(request):
     
     return JsonResponse(data)
 
-
+@login_required
 def ajax_task_history(request):
 
     template = loader.get_template('main/ajax_task_history.html')
@@ -714,6 +713,7 @@ def ajax_task_history(request):
     return HttpResponse(template.render(context, request))
 
 
+@login_required
 def ajax_task_dates_done(request):
 
     task_id = int(request.GET.get('task_id', None))
@@ -726,7 +726,7 @@ def ajax_task_dates_done(request):
     return JsonResponse(data)
 
 
-
+@login_required
 def ajax_category_remove(request):
     category_id = int(request.GET.get('category_id', None))
 
@@ -738,11 +738,12 @@ def ajax_category_remove(request):
     return JsonResponse(data)
 
 
-
+@login_required
 def task_postpone(request, task_id, delay_shift):
     TA._postponeTask(task_id, delay_shift)
     return HttpResponse("Task %d postponed for %d days, <a href='javascript:history.go(-1)'>Go back</a>" % (task_id, delay_shift))
 
+@login_required
 def task_assign(request, task_id, delay_shift):
     try:
 
@@ -761,7 +762,7 @@ def task_assign(request, task_id, delay_shift):
 
 
 
-
+@login_required
 def task_archive(request, task_id):
     TA._archiveTask(task_id)
     return HttpResponse("Task %d has been archived, <a href='javascript:history.go(-1)'>Go back</a>" % (task_id))
