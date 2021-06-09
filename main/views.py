@@ -326,6 +326,67 @@ def archive_detail(request, task_id):
 
 
 """
+TASK STATS PAGE
+"""
+
+def stats(request):
+    
+    if request.user.is_authenticated:
+        category_list = Category.objects.filter(user_id = request.user.id).order_by('name')
+    else:
+        category_list = []
+    template = loader.get_template('main/stats.html')
+    context = {
+        'category_list': category_list,
+    }
+    return HttpResponse(template.render(context, request))
+
+"""
+AJAX for tasks page
+"""
+def ajax_task_stats(request):
+
+    from django.db.models.functions import Cast
+    from django.db.models.fields import DateField
+    from django.db.models import F
+    from datetime import datetime, date
+    from datetime import timedelta
+    from django.db.models.functions import TruncDate
+    
+
+
+    filter_date_from = date.today() + timedelta(days=-30)
+    filter_date_to = date.today() 
+                  
+    print(filter_date_from)
+    print(filter_date_to)
+
+    log_rows = {}
+    log_types = ['all', TASK_LOG_DONE, TASK_LOG_POSTPONE]    
+    for log_type in log_types:
+        qs = Changelog.objects
+        if not log_type == 'all':
+            qs = qs.filter(action=log_type)
+        log_rows[log_type] = (qs
+            .values(_id = Cast('log_date', DateField()))
+            .annotate(count = Count('id'))
+            .filter(log_date__range=[filter_date_from, filter_date_to])
+            .order_by('-_id')
+        )    
+        print(log_rows[log_type].query)
+        log_rows[log_type] = list(log_rows[log_type].all())
+    data = {
+        'result' : {
+            'data_all': log_rows['all'],
+            'data_yes': log_rows[TASK_LOG_DONE],
+            'data_no': log_rows[TASK_LOG_POSTPONE],
+            
+        }
+    }
+    return JsonResponse(data)
+
+
+"""
 CATEGORY LIST PAGE
 """
 
@@ -340,7 +401,6 @@ def category(request):
         'category_list': category_list,
     }
     return HttpResponse(template.render(context, request))
-
 
 """
 CATEGORY REMOVAL ACTION

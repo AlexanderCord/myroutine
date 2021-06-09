@@ -41,6 +41,8 @@ urlpatterns = [
     path('ajax/task/archive', views.ajax_task_archive, name = 'ajax_task_archive'),
     
     path('ajax/task/dates_done', views.ajax_task_dates_done, name = 'ajax_task_days_done'),
+    
+    path('ajax/task/stats', views.ajax_task_stats, name = 'ajax_task_stats'),
 
     path('ajax/category/remove', views.ajax_category_remove, name = 'ajax_category_remove'),
     
@@ -57,6 +59,9 @@ urlpatterns = [
     path('category/remove/<int:category_id>', views.category_remove, name = 'category_remove'),
     
     path('notifications', views.notifications, name = 'notifications'), 
+
+    path('stats', views.stats, name = 'stats'), 
+    
 
     path('', include('social_django.urls', namespace='social')),
     
