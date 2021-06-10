@@ -353,7 +353,7 @@ AJAX for tasks page
 def ajax_task_stats(request):
 
     filter_date_from = date.today() + timedelta(days=-30)
-    filter_date_to = date.today() 
+    filter_date_to = date.today() + timedelta(days=1)
                   
     print(filter_date_from)
     print(filter_date_to)
