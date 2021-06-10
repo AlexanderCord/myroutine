@@ -361,7 +361,7 @@ def ajax_task_stats(request):
     log_rows = {}
     log_types = ['all', TASK_LOG_DONE, TASK_LOG_POSTPONE]    
     for log_type in log_types:
-        qs = Changelog.objects
+        qs = Changelog.objects.filter(task_id__user_id=request.user.id)
         if not log_type == 'all':
             qs = qs.filter(action=log_type)
         log_rows[log_type] = (qs
