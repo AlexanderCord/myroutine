@@ -61,6 +61,8 @@ urlpatterns = [
     path('notifications', views.notifications, name = 'notifications'), 
 
     path('stats', views.stats, name = 'stats'), 
+
+    path('progress_log', views.progress_log, name = 'progress_log'), 
     
 
     path('', include('social_django.urls', namespace='social')),

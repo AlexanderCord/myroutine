@@ -92,6 +92,44 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
+"""
+PROGRESS LOG PAGE
+"""
+@login_required
+def progress_log(request):
+    filter_category_id = -1
+
+
+    filter_date_from = date.today() + timedelta(days=-30)
+    filter_date_to = date.today() + timedelta(days=1)
+        
+    qs = Changelog.objects.filter(task_id__user_id=request.user.id)
+    qs = qs.filter(action=TASK_LOG_DONE)
+    log_rows = (qs
+        .values(_id = Cast('log_date', DateField()))
+        .annotate(count = Count('task_id', distinct = True))
+        .filter(log_date__range=[filter_date_from, filter_date_to])
+        .order_by('-_id')
+    )    
+    print(log_rows.query)
+    log_rows = list(log_rows.all())
+    log_rows = [{'date_block':x['_id']} for x in log_rows]
+    for k,dt in enumerate(log_rows):
+        current_date_from = dt['date_block']
+        current_date_to = current_date_from + timedelta(days=1)
+        task_obj = Task.objects.filter(active = True, user_id = request.user.id, changelog__action = TASK_LOG_DONE, changelog__log_date__range=[current_date_from, current_date_to])
+        print(task_obj.query)
+        log_rows[k]['task_list'] = task_obj.all()
+#    return HttpResponse(str(log_rows))
+    template = loader.get_template('main/progress_log.html')
+    context = {
+        'log_rows': log_rows,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+
+
 
 
 

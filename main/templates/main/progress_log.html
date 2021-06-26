@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<h3>Progress log</h3>
+<p><a href="{% url 'index' %}">Main page</a></p>
+<p>Tasks marked as done by date for the last 30 days</p>
+    
+    {% if log_rows  %}
+        
+        {% for log_row in log_rows %}
+            <span class="font-weight-bold date-block-header" date-block='{{k}}'>{{log_row.date_block}}</span>
+            
+            <ol class='date-block-items' date-block='{{k}}'>
+            {% for task in log_row.task_list %}
+                <li><a href="{% url 'task' task.id %}">[{{task.category_id}}] {{ task.task }}</a></li>
+            {% endfor %}
+            </ol>
+        {% endfor %}
+    {% else %}
+        <p>No tasks are available.</p>
+    {% endif %}
+
+<p><a href="{% url 'archive' %}" class="btn btn-light">Archive</a> <a class="btn btn-light" href="{% url 'category' %}">Manage categories</a> <a class="btn btn-light" href="{% url 'notifications' %}">Notification settings</a></p>
+
+{% endblock %}
+
+{% block javascript %}
+<script src="{{STATIC_URL}}/static/main_page.js">
+</script>
+{% endblock %}

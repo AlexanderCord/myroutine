@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<a class="btn btn-primary" href="{% url 'task_add' %}">Add Task</a> | <a href="{% url 'stats' %}">Statistics</a>
+<a class="btn btn-primary" href="{% url 'task_add' %}">Add Task</a> | <a href="{% url 'progress_log' %}">Progress log</a> | <a href="{% url 'stats' %}">Statistics</a>
     
     {% if task_list  %}
     
