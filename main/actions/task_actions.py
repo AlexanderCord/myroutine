@@ -3,8 +3,7 @@ Task update methods
 """
 
 from django.http import HttpResponse,Http404, JsonResponse
-from django.shortcuts import HttpResponseRedirect
-from datetime import datetime, date
+from datetime import date
 from datetime import timedelta
 from main.static import *
 from main.models import *

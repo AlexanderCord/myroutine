@@ -1,10 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from main.models import *
-from django.utils import timezone
 from django.core.mail import send_mail, EmailMessage
 from django.contrib.auth.models import User
-import codecs
-import sys
 
 #sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 #sys.stderr = codecs.getwriter('utf-8')(sys.stderr)
