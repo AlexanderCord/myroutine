@@ -14,7 +14,7 @@ $(document).ready(function() {
     
         let block_header = $(this);
         let k = block_header.attr('date-block');
-        let block_items = $('ul[date-block='+k+']');
+        let block_items = $('ol[date-block='+k+']');
 
         
         item_count = block_items.children().length ;
