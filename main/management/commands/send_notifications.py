@@ -32,18 +32,23 @@ class Command(BaseCommand):
                 msg += "Reminder from MyRoutine.\n"
                 msg += "Here are the tasks for today you've scheduled:\n"
             
+                taskNum = 0
                 for task in tasks:
+                    taskNum += 1
                     self.stdout.write("Adding task id#" + str(task.id)+ ", user_id = "+str(task.user_id.id))
-                    msg += "- [%s] %s" % (task.category_id.name, task.task) + "\n"
+                    msg += "%d. [%s] %s" % (taskNum, task.category_id.name, task.task) + "\n"
 
 
                 past_tasks = Task.objects.select_related('category_id').select_related('schedule__task_id').filter(schedule__next_date__lt = date.today(), user_id = user.user_id.id, active = True ).all().order_by('-id')
                 if len(past_tasks) > 0:
                     msg += "\n And some tasks from earlier days you may want to consider:\n"
                     
+                    
+                    taskNum = 0
                     for past_task in past_tasks:
+                        taskNum += 1
                         self.stdout.write("Adding past task id#" + str(past_task.id)+ ", user_id = "+str(past_task.user_id.id))
-                        msg += "- [%s] %s" % (past_task.category_id.name, past_task.task) + "\n"
+                        msg += "%d. [%s] %s" % (taskNum, past_task.category_id.name, past_task.task) + "\n"
                         
                     msg += "\n"    
                     
