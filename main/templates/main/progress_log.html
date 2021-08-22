@@ -13,7 +13,7 @@
             
             <ol class='date-block-items' date-block='{{k}}'>
             {% for task in log_row.task_list %}
-                <li><a href="{% url 'task' task.id %}">[{{task.category_id}}] {{ task.task }}</a></li>
+                <li>[{{task.priority}}] <a href="{% url 'task' task.id %}">[{{task.category_id}}] {{ task.task }}</a></li>
             {% endfor %}
             </ol>
         {% endfor %}

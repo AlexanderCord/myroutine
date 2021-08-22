@@ -119,7 +119,7 @@ def progress_log(request):
         current_date_to = current_date_from + timedelta(days=1)
         task_obj = Task.objects.distinct().filter(active = True, user_id = request.user.id, changelog__action = TASK_LOG_DONE, changelog__log_date__range=[current_date_from, current_date_to])
         print(task_obj.query)
-        log_rows[k]['task_list'] = task_obj.all()
+        log_rows[k]['task_list'] = task_obj.order_by('priority').all()
 #    return HttpResponse(str(log_rows))
     template = loader.get_template('main/progress_log.html')
     context = {
