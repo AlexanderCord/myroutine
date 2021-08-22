@@ -93,7 +93,10 @@ def task_add(request):
                     task = form.cleaned_data['task'],
                     start_date = date.today(), 
                     period = form.cleaned_data['period'],
-                    period_data = form.cleaned_data['period_data']
+                    period_data = form.cleaned_data['period_data'],
+                    priority = form.cleaned_data['priority'] if form.cleaned_data['priority'] else 0
+                    
+                    
                           
                 )
                 qs.save()
@@ -157,7 +160,8 @@ def task_edit(request,task_id):
                     category_id = form.cleaned_data['category'], #Category.objects.get(pk = form.cleaned_data['category']), 
                     task = form.cleaned_data['task'],
                     period = form.cleaned_data['period'],
-                    period_data = form.cleaned_data['period_data']
+                    period_data = form.cleaned_data['period_data'],
+                    priority = form.cleaned_data['priority']
                           
                 )
                 
@@ -187,7 +191,9 @@ def task_edit(request,task_id):
             'category' : task_row.category_id,
             'period' : task_row.period  ,
             'period_data' : task_row.period_data  ,
+            'priority' : task_row.priority,            
             'next_date' : task_next_date
+
         })
 
     

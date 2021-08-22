@@ -37,6 +37,8 @@ class Task(models.Model):
     period = models.ForeignKey('Period',  on_delete=models.SET_NULL, null= True)
     period_data = models.IntegerField("Period data", default=0)
 
+    priority = models.IntegerField("Priority", default=0)
+
     def __str__(self):
         return str(self.user_id) + "-" + self.task 
 
