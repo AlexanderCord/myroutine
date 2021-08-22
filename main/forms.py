@@ -15,7 +15,7 @@ class NewTaskForm(forms.Form):
     category  = forms.ModelChoiceField(queryset=Category.objects.all())
     period = forms.ModelChoiceField(queryset=Period.objects.all().order_by('name'))
     period_data = forms.IntegerField(label = 'Custom period shift (days)', min_value = 0, required = False) 
-    priority = forms.IntegerField(label = 'Priority (lthe less, the higher)', min_value = 0, required = False) 
+    priority = forms.IntegerField(label = 'Priority (lesser value = higher priority)', min_value = 0, required = False) 
     
 
 

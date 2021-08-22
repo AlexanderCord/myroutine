@@ -75,7 +75,7 @@ def index(request):
             When(schedule__next_date__lt = date.today(), then=Value(date_blocks['past'])),
             default=Value(date_blocks['other']),
             output_field=CharField(),
-        )).filter(**filter_args).order_by('schedule__next_date')
+        )).filter(**filter_args).order_by('schedule__next_date','priority')
         
         category_list = Task.objects.select_related("category_id__name").values("category_id","category_id__name").filter(active=True, user_id = request.user.id).order_by("-task_count").annotate(task_count = Count("id"))
         #print(category_list)

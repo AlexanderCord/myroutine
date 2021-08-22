@@ -28,7 +28,7 @@
             <ol class='date-block-items' date-block='{{k}}'>
             {% for task in task_list %}
                 {% if task.week_day == date_block %}
-                <li><a href="{% url 'task' task.id %}">[{{task.category_id}}] {{ task.task }} - {{ task.schedule.next_date }}</a></li>
+                <li>[{{task.priority}}]<a href="{% url 'task' task.id %}"> [{{task.category_id}}] {{ task.task }} - {{ task.schedule.next_date }}</a></li>
                 {% endif %}                
             {% endfor %}
             </ol>
