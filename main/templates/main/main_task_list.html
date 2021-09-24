@@ -25,8 +25,8 @@
             <ul class='date-block-items list-group' date-block='{{k}}'>
             {% for task in task_list %}
                 {% if task.week_day == date_block %}
-                <li class="list-group-item"><a class="btn btn-outline-primary" href="{% url 'task' task.id %}"> [{{task.priority}}][{{task.category_id}}] {{ task.task }} - {{ task.schedule.next_date }}</a>  <a class="btn btn-primary btn-sm link_task_done" href="#" task-id="{{task.id}}">&#10003;</a>
-<a class="btn btn-light btn-sm link_task_postpone" href="#" delay-shift="1" task-id="{{task.id}}">+1</a></li>
+                <li class="list-group-item border-0"><a class="btn btn-outline-primary" href="{% url 'task' task.id %}"> [{{task.priority}}][{{task.category_id}}] {{ task.task }} - {{ task.schedule.next_date }}</a>  <a class="btn btn-primary btn-sm link_task_done" href="#" task-id="{{task.id}}" title="Mark as done">&#10003;</a>
+<a class="btn btn-light btn-sm link_task_postpone" href="#" delay-shift="1" task-id="{{task.id}}" title="Postpone for 1 day">+1</a></li>
                 {% endif %}                
             {% endfor %}
             </ul>
