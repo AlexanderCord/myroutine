@@ -22,14 +22,14 @@
         {% for k,date_block in date_blocks.items %}
             <span class="font-weight-bold date-block-header" date-block='{{k}}'>{{date_block}}</span>
             
-            <ol class='date-block-items' date-block='{{k}}'>
+            <ul class='date-block-items list-group' date-block='{{k}}'>
             {% for task in task_list %}
                 {% if task.week_day == date_block %}
-                <li>[{{task.priority}}]<a href="{% url 'task' task.id %}"> [{{task.category_id}}] {{ task.task }} - {{ task.schedule.next_date }}</a>  <a class="btn btn-primary btn-sm link_task_done" href="#" task-id="{{task.id}}">&#10003;</a>
+                <li class="list-group-item"><a class="btn btn-outline-primary" href="{% url 'task' task.id %}"> [{{task.priority}}][{{task.category_id}}] {{ task.task }} - {{ task.schedule.next_date }}</a>  <a class="btn btn-primary btn-sm link_task_done" href="#" task-id="{{task.id}}">&#10003;</a>
 <a class="btn btn-light btn-sm link_task_postpone" href="#" delay-shift="1" task-id="{{task.id}}">+1</a></li>
                 {% endif %}                
             {% endfor %}
-            </ol>
+            </ul>
         {% endfor %}
     {% else %}
         <p>No tasks are available.</p>

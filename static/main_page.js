@@ -13,10 +13,11 @@ $(document).ready(function() {
     
             let block_header = $(this);
             let k = block_header.attr('date-block');
-            let block_items = $('ol[date-block='+k+']');
+            let block_items = $('ul[date-block='+k+']');
 
         
             item_count = block_items.children().length ;
+            block_header.text(block_header.text() + " (" + item_count + ")")
             if(item_count == 0) {
                 block_header.remove();
                 block_items.remove();
