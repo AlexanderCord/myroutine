@@ -92,6 +92,63 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
+
+"""
+MAIN PAGE - AJAX TASK LIST
+"""
+@login_required
+def main_task_list(request):
+    filter_category_id = -1
+    
+    if request.user.is_authenticated:
+        
+        filter_args = {
+            'active' :True, 
+            'user_id' : request.user.id
+        }
+        filter_category_id = int(request.GET.get('category_id', -1))
+
+        if filter_category_id != -1:
+            filter_args['category_id'] = Category.objects.get(pk=filter_category_id)
+
+
+        date_blocks = {
+            'past' : 'Past',
+            'today' : 'Today',
+            'tomorrow' : 'Tomorrow',
+            'next7' : 'Next 7 days',
+            'next30' : 'Next 30 days',
+            'other' : 'Other'
+        }
+            
+        task_list = Task.objects.annotate(week_day=Case(
+            When(schedule__next_date = date.today(), then=Value(date_blocks['today'])),
+            When(schedule__next_date = date.today() + timedelta(days=1) , then=Value(date_blocks['tomorrow'])),
+            When(Q(schedule__next_date__gt = date.today() + timedelta(days=1)) & Q(schedule__next_date__lte = date.today() + timedelta(days=7)) , then=Value(date_blocks['next7'])),
+            When(Q(schedule__next_date__gt = date.today()) & Q(schedule__next_date__lte = date.today() + timedelta(days=30)) , then=Value(date_blocks['next30'])),
+            When(schedule__next_date__lt = date.today(), then=Value(date_blocks['past'])),
+            default=Value(date_blocks['other']),
+            output_field=CharField(),
+        )).filter(**filter_args).order_by('schedule__next_date','priority')
+        
+        category_list = Task.objects.select_related("category_id__name").values("category_id","category_id__name").filter(active=True, user_id = request.user.id).order_by("-task_count").annotate(task_count = Count("id"))
+        #print(category_list)
+    else:
+        task_list = []
+        date_blocks = {}
+        category_list = []
+    template = loader.get_template('main/main_task_list.html')
+    context = {
+        'task_list': task_list,
+        'category_list' : category_list,
+        'filter_category_id' : filter_category_id,
+        'date_blocks' : date_blocks
+    }
+    return HttpResponse(template.render(context, request))
+
+
+
+
 """
 PROGRESS LOG PAGE
 """

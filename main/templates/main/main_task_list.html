@@ -1,0 +1,40 @@
+
+{% block content %}
+
+    {% if task_list  %}
+    
+        <div id ="filter_block"> 
+        {% if not filter_category_id == -1 %}
+        <a href="/">
+        {% endif %}
+        All <span id="total_task_count"></span>
+        {% if not filter_category_id == -1 %}
+        </a>
+        {% endif %}&nbsp;
+        {% for category in category_list %}
+            {% if not category.category_id == filter_category_id %}
+            <a href="/?category_id={{category.category_id}}">
+            {% endif %}
+            {{category.category_id__name}} (<span class="task_category_count">{{category.task_count}}</span>){% if not category.category_id == filter_category_id %}</a>{% endif %}&nbsp;        
+        {% endfor %}
+        </div>
+        
+        {% for k,date_block in date_blocks.items %}
+            <span class="font-weight-bold date-block-header" date-block='{{k}}'>{{date_block}}</span>
+            
+            <ol class='date-block-items' date-block='{{k}}'>
+            {% for task in task_list %}
+                {% if task.week_day == date_block %}
+                <li>[{{task.priority}}]<a href="{% url 'task' task.id %}"> [{{task.category_id}}] {{ task.task }} - {{ task.schedule.next_date }}</a>  <a class="btn btn-primary btn-sm link_task_done" href="#" task-id="{{task.id}}">&#10003;</a>
+<a class="btn btn-light btn-sm link_task_postpone" href="#" delay-shift="1" task-id="{{task.id}}">+1</a></li>
+                {% endif %}                
+            {% endfor %}
+            </ol>
+        {% endfor %}
+    {% else %}
+        <p>No tasks are available.</p>
+    {% endif %}
+</div>
+
+{% endblock %}
+

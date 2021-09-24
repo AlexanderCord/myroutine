@@ -10,6 +10,9 @@ urlpatterns = [
 
     path('', views.index, name='index'),
 
+    # todo move to ajax view module
+    path('ajax/main_task_list', views.main_task_list, name='main_task_list'),
+
     path('task/<int:task_id>/', views_task.task, name = 'task'),
 
     path('task/<int:task_id>/done', views_task.task_done, name = 'task_done'),

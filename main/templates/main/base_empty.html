@@ -1,0 +1,8 @@
+{% load static %}<!doctype html>
+{% if user.is_authenticated %}
+      {% block content %}
+      {% endblock %}
+    {% block javascript %}{% endblock %}
+{% else %}
+
+{% endif %}
